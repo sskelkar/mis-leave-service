@@ -1,0 +1,102 @@
+-- Package com.maxxton.mis.leave
+
+-- public_holiday
+CREATE SEQUENCE seq_public_holiday START WITH 1;
+
+CREATE TABLE public_holiday
+(
+	public_holiday_id NUMBER NOT NULL,
+	holiday_date DATE NOT NULL,
+	name VARCHAR2(50),
+	
+	CONSTRAINT pk_public_holiday PRIMARY KEY (public_holiday_id)
+);
+
+
+-- leave_type
+CREATE SEQUENCE seq_leave_type START WITH 1;
+
+CREATE TABLE leave_type
+(
+	leave_type_id NUMBER NOT NULL,
+	name VARCHAR2(50),
+	
+	CONSTRAINT pk_leave_type PRIMARY KEY (leave_type_id)
+);
+
+
+-- leave_status
+CREATE SEQUENCE seq_leave_status START WITH 1;
+
+CREATE TABLE leave_status
+(
+	leave_status_id NUMBER NOT NULL,
+	name VARCHAR2(50),
+	
+	CONSTRAINT pk_leave_status PRIMARY KEY (leave_status_id),
+	CONSTRAINT c_leave_status_name CHECK (name IN ('planned', 'unplanned', 'lwp', 'comp_off', 'encashed', 'carry_forward', 'maternity', 'paternity'))
+);
+
+
+-- leave_application
+CREATE SEQUENCE seq_leave_application START WITH 1;
+
+CREATE TABLE leave_application
+(
+	leave_application_id NUMBER NOT NULL,
+	employee_id NUMBER NOT NULL,
+	leave_from DATE,
+	leave_to DATE,
+	leave_duration NUMBER,
+	no_of_working_days NUMBER,
+	application_date DATE,
+	comment_by_applicant VARCHAR2(80),
+	leave_type_id NUMBER NOT NULL,
+	leave_status_id NUMBER NOT NULL,
+	is_borrowed NUMBER,
+	comment_by_manager VARCHAR2(80),
+	applied_for VARCHAR2(20),
+	
+	CONSTRAINT pk_leave_application PRIMARY KEY(leave_application_id),
+	CONSTRAINT fk_leave_application_emp FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+	CONSTRAINT fk_leave_application_type FOREIGN KEY (leave_type_id) REFERENCES leave_type(leave_type_id),
+	CONSTRAINT fk_leave_application_status FOREIGN KEY (leave_status_id) REFERENCES leave_status(leave_status_id),
+	CONSTRAINT c_leave_application_for CHECK (applied_for IN ('full_day', 'first_half', 'second_half'))	
+);
+
+
+-- employee_leave
+CREATE SEQUENCE seq_employee_leave START WITH 1;
+
+CREATE TABLE employee_leave
+(
+	employee_leave_id NUMBER NOT NULL,
+	employee_id NUMBER NOT NULL,
+	year NUMBER,
+	leave_count NUMBER,
+	leave_type_id NUMBER NOT NULL,
+		
+	CONSTRAINT pk_employee_leave PRIMARY KEY (employee_leave_id),
+	CONSTRAINT fk_employee_leave_emp FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+	CONSTRAINT fk_employee_leave_type FOREIGN KEY (leave_type_id) REFERENCES leave_type(leave_type_id)
+);
+
+
+-- employee_comp_off
+CREATE SEQUENCE seq_employee_comp_off START WITH 1;
+
+CREATE TABLE employee_comp_off
+(
+	employee_comp_off_id NUMBER NOT NULL,
+	employee_leave_id NUMBER NOT NULL,
+	manager_id NUMBER NOT NULL,
+	comment_by_manager VARCHAR2(80),
+	start_date DATE,
+	end_date DATE,
+			
+	CONSTRAINT pk_employee_comp_off PRIMARY KEY (employee_comp_off_id),
+	CONSTRAINT fk_employee_comp_off_leave FOREIGN KEY (employee_leave_id) REFERENCES employee_leave(employee_leave_id),
+	CONSTRAINT fk_employee_comp_off_mgr FOREIGN KEY (manager_id) REFERENCES employee(employee_id)
+);
+
+
