@@ -10,49 +10,49 @@ public class EmployeeLeave
 {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
-  private Number employeeLeaveId;
-  private Number employeeId;
-  private Number year;
-  private Number leaveCount;
-  private Number leaveTypeId;
+  private Long employeeLeaveId;
+  private Long employeeId;
+  private Long year;
+  private Double leaveCount;
+  private Long leaveTypeId;
 
-  public Number getEmployeeLeaveId()
+  public Long getEmployeeLeaveId()
   {
     return employeeLeaveId;
   }
-  public void setEmployeeLeaveId(Number employeeLeaveId)
+  public void setEmployeeLeaveId(Long employeeLeaveId)
   {
     this.employeeLeaveId = employeeLeaveId;
   }
-  public Number getEmployeeId()
+  public Long getEmployeeId()
   {
     return employeeId;
   }
-  public void setEmployeeId(Number employeeId)
+  public void setEmployeeId(Long employeeId)
   {
     this.employeeId = employeeId;
   }
-  public Number getYear()
+  public Long getYear()
   {
     return year;
   }
-  public void setYear(Number year)
+  public void setYear(Long year)
   {
     this.year = year;
   }
-  public Number getLeaveCount()
+  public Double getLeaveCount()
   {
     return leaveCount;
   }
-  public void setLeaveCount(Number leaveCount)
+  public void setLeaveCount(Double leaveCount)
   {
     this.leaveCount = leaveCount;
   }
-  public Number getLeaveTypeId()
+  public Long getLeaveTypeId()
   {
     return leaveTypeId;
   }
-  public void setLeaveTypeId(Number leaveTypeId)
+  public void setLeaveTypeId(Long leaveTypeId)
   {
     this.leaveTypeId = leaveTypeId;
   }

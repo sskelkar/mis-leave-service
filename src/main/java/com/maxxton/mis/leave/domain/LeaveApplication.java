@@ -12,31 +12,31 @@ public class LeaveApplication
 {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
-  private Number leaveApplicationId; 
-  private Number employeeId;
+  private Long leaveApplicationId; 
+  private Long employeeId;
   private Date leaveFrom;
   private Date leaveTo;
-  private Number leaveDuration;
-  private Number NoOfWorkingDays;
+  private Double leaveDuration;
+  private Double NoOfWorkingDays;
   private Date applicationDate;
   private String commentByApplicant;
-  private Number leaveTypeId;
-  private Number leaveStatusId;
-  private Number isBorrowed;
+  private Long leaveTypeId;
+  private Long leaveStatusId;
+  private Long isBorrowed;
   
-  public Number getLeaveApplicationId()
+  public Long getLeaveApplicationId()
   {
     return leaveApplicationId;
   }
-  public void setLeaveApplicationId(Number leaveApplicationId)
+  public void setLeaveApplicationId(Long leaveApplicationId)
   {
     this.leaveApplicationId = leaveApplicationId;
   }
-  public Number getEmployeeId()
+  public Long getEmployeeId()
   {
     return employeeId;
   }
-  public void setEmployeeId(Number employeeId)
+  public void setEmployeeId(Long employeeId)
   {
     this.employeeId = employeeId;
   }
@@ -56,19 +56,19 @@ public class LeaveApplication
   {
     this.leaveTo = leaveTo;
   }
-  public Number getLeaveDuration()
+  public Double getLeaveDuration()
   {
     return leaveDuration;
   }
-  public void setLeaveDuration(Number leaveDuration)
+  public void setLeaveDuration(Double leaveDuration)
   {
     this.leaveDuration = leaveDuration;
   }
-  public Number getNoOfWorkingDays()
+  public Double getNoOfWorkingDays()
   {
     return NoOfWorkingDays;
   }
-  public void setNoOfWorkingDays(Number noOfWorkingDays)
+  public void setNoOfWorkingDays(Double noOfWorkingDays)
   {
     NoOfWorkingDays = noOfWorkingDays;
   }
@@ -88,27 +88,27 @@ public class LeaveApplication
   {
     this.commentByApplicant = commentByApplicant;
   }
-  public Number getLeaveTypeId()
+  public Long getLeaveTypeId()
   {
     return leaveTypeId;
   }
-  public void setLeaveTypeId(Number leaveTypeId)
+  public void setLeaveTypeId(Long leaveTypeId)
   {
     this.leaveTypeId = leaveTypeId;
   }
-  public Number getLeaveStatusId()
+  public Long getLeaveStatusId()
   {
     return leaveStatusId;
   }
-  public void setLeaveStatusId(Number leaveStatusId)
+  public void setLeaveStatusId(Long leaveStatusId)
   {
     this.leaveStatusId = leaveStatusId;
   }
-  public Number getIsBorrowed()
+  public Long getIsBorrowed()
   {
     return isBorrowed;
   }
-  public void setIsBorrowed(Number isBorrowed)
+  public void setIsBorrowed(Long isBorrowed)
   {
     this.isBorrowed = isBorrowed;
   }

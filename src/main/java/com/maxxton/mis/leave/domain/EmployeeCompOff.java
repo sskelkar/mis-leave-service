@@ -12,34 +12,34 @@ public class EmployeeCompOff
 {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
-  private Number employeeCompOffId;
-  private Number employeeLeaveId;
-  private Number managerId;
+  private Long employeeCompOffId;
+  private Long employeeLeaveId;
+  private Long managerId;
   private String commentByManager;
   private Date startDate;
   private Date endDate;
 
-  public Number getEmployeeCompOffId()
+  public Long getEmployeeCompOffId()
   {
     return employeeCompOffId;
   }
-  public void setEmployeeCompOffId(Number employeeCompOffId)
+  public void setEmployeeCompOffId(Long employeeCompOffId)
   {
     this.employeeCompOffId = employeeCompOffId;
   }
-  public Number getEmployeeLeaveId()
+  public Long getEmployeeLeaveId()
   {
     return employeeLeaveId;
   }
-  public void setEmployeeLeaveId(Number employeeLeaveId)
+  public void setEmployeeLeaveId(Long employeeLeaveId)
   {
     this.employeeLeaveId = employeeLeaveId;
   }
-  public Number getManagerId()
+  public Long getManagerId()
   {
     return managerId;
   }
-  public void setManagerId(Number managerId)
+  public void setManagerId(Long managerId)
   {
     this.managerId = managerId;
   }
