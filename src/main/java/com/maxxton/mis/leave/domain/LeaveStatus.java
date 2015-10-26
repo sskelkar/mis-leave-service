@@ -10,14 +10,14 @@ public class LeaveStatus
 {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
-  private Number leaveStatusId;
+  private Long leaveStatusId;
   private String name;
   
-  public Number getLeaveStatusId()
+  public Long getLeaveStatusId()
   {
     return leaveStatusId;
   }
-  public void setLeaveStatusId(Number leaveStatusId)
+  public void setLeaveStatusId(Long leaveStatusId)
   {
     this.leaveStatusId = leaveStatusId;
   }

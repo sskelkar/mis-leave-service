@@ -12,7 +12,7 @@ public class Employee
 {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
-  private Number employeeId;
+  private Long employeeId;
   
   private String firstName;
   private String middleName;
@@ -23,7 +23,7 @@ public class Employee
   private Date birthDate;
   private Date joiningDate;
   private String sex;
-  private Number probationPeriodMonths;
+  private Double probationPeriodMonths;
   private Date releaseDate;
   private String panNumber;
   private String passportNumber;
@@ -31,12 +31,12 @@ public class Employee
   private String emergencyContactPerson;
   private String emergencyContactPhoneNumber;
   private String bloodGroup;
-  
-  public Number getEmployeeId()
+   
+  public Long getEmployeeId()
   {
     return employeeId;
   }
-  public void setEmployeeId(Number employeeId)
+  public void setEmployeeId(Long employeeId)
   {
     this.employeeId = employeeId;
   }
@@ -112,11 +112,11 @@ public class Employee
   {
     this.sex = sex;
   }
-  public Number getProbationPeriodMonths()
+  public Double getProbationPeriodMonths()
   {
     return probationPeriodMonths;
   }
-  public void setProbationPeriodMonths(Number probationPeriodMonths)
+  public void setProbationPeriodMonths(Double probationPeriodMonths)
   {
     this.probationPeriodMonths = probationPeriodMonths;
   }
@@ -175,5 +175,5 @@ public class Employee
   public void setBloodGroup(String bloodGroup)
   {
     this.bloodGroup = bloodGroup;
-  } 
+  }
 }

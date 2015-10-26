@@ -12,15 +12,15 @@ public class PublicHoliday
 {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
-  private Number publicHolidayId;  
+  private Long publicHolidayId;  
   private Date holidayDate;
   private String name;
   
-  public Number getPublicHolidayId()
+  public Long getPublicHolidayId()
   {
     return publicHolidayId;
   }
-  public void setPublicHolidayId(Number publicHolidayId)
+  public void setPublicHolidayId(Long publicHolidayId)
   {
     this.publicHolidayId = publicHolidayId;
   }
