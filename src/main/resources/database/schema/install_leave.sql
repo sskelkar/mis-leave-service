@@ -1,5 +1,32 @@
 -- Package com.maxxton.mis.leave
 
+-- employee
+CREATE SEQUENCE seq_employee START WITH 1;
+
+CREATE TABLE employee
+(
+	employee_id NUMBER NOT NULL,
+	first_name VARCHAR2(50),
+	middle_name VARCHAR2(50),
+	last_name VARCHAR2(50),
+	user_name VARCHAR2(50),
+	password VARCHAR2(128),
+	email VARCHAR2(20),
+	birth_date DATE,
+	joining_date DATE,
+	sex VARCHAR2(10),
+	probation_period_months NUMBER,
+	release_date DATE,
+	pan_number VARCHAR2(15),
+	passport_number VARCHAR2(15),
+	passport_valid_till DATE,
+	emergency_contact_person VARCHAR2(50),
+	emergency_contact_phone_number VARCHAR2(20),
+	blood_group VARCHAR2(5),
+	
+	CONSTRAINT pk_employee PRIMARY KEY (employee_id)
+);
+
 -- public_holiday
 CREATE SEQUENCE seq_public_holiday START WITH 1;
 
