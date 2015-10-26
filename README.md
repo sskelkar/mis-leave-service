@@ -1,6 +1,6 @@
 ## Notes
 
-1. Steps to use database connection in the project:
+**1.** Steps to use database connection in the project:
 
 * In application.yml, declare *datasource*. It can be done like this:
 ```
@@ -27,4 +27,4 @@ repositories {
 }
 ```
 
-2. Use Long instead of Number type.
+**2.** Use Long instead of Number type.
