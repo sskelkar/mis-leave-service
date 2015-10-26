@@ -1,12 +1,9 @@
 buildscript {
-    ext {
-        springBootVersion = '1.2.7.RELEASE'
-    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}") 
         classpath('io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE')
     }
 }
@@ -26,12 +23,15 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${spring_boot_version}")
+    compile("org.springframework.boot:spring-boot-starter-web:${spring_boot_version}")
+    compile("com.oracle:ojdbc6:${oracle_jdbc_version}")
+    
     testCompile('org.springframework.boot:spring-boot-starter-test') 
 }
 

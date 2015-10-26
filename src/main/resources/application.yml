@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: mis-leave-service
+  datasource:
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@//192.168.100.100:1521/nwi
+    username: nwstopparken_india
+    password: nwstopparken_india
