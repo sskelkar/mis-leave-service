@@ -1,0 +1,13 @@
+ __  __                  _              
+|  \/  | __ ___  ____  _| |_ ___  _ __  
+| |\/| |/ _` \ \/ /\ \/ / __/ _ \| '_ \ 
+| |  | | (_| |>  <  >  <| || (_) | | | |
+|_|  |_|\__,_/_/\_\/_/\_\\__\___/|_| |_|
+========================================
+
+Maxxton mis-leave-service
+
+...Starting up version: ${spring.application.version}
+
+Author:    S. Kelkar (s.kelkar@maxxton.com)
+Copyright: Maxxton Group 2015
