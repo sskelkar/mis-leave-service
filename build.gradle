@@ -31,6 +31,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-jpa:${spring_boot_version}")
     compile("org.springframework.boot:spring-boot-starter-web:${spring_boot_version}")
     compile("com.oracle:ojdbc6:${oracle_jdbc_version}")
+    compile("joda-time:joda-time:${joda_time_version}")
     
     testCompile("org.springframework.boot:spring-boot-starter-test:${spring_boot_version}") 
 }

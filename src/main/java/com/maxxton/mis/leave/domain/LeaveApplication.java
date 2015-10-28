@@ -6,12 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class LeaveApplication
 {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
+  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_LEAVE_APPLICATION")
+  @SequenceGenerator(name="SEQ_LEAVE_APPLICATION", sequenceName="SEQ_LEAVE_APPLICATION", allocationSize=1)
   private Long leaveApplicationId; 
   private Long employeeId;
   private Date leaveFrom;
