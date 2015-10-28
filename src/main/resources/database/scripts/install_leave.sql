@@ -9,7 +9,7 @@ CREATE TABLE employee
 	first_name VARCHAR2(50),
 	middle_name VARCHAR2(50),
 	last_name VARCHAR2(50),
-	user_name VARCHAR2(50),
+	user_name VARCHAR2(50) NOT NULL UNIQUE,
 	password VARCHAR2(128),
 	email VARCHAR2(20),
 	birth_date DATE,
@@ -48,7 +48,8 @@ CREATE TABLE leave_type
 	leave_type_id NUMBER NOT NULL,
 	name VARCHAR2(50),
 	
-	CONSTRAINT pk_leave_type PRIMARY KEY (leave_type_id)
+	CONSTRAINT pk_leave_type PRIMARY KEY (leave_type_id),
+	CONSTRAINT c_leave_type_name CHECK (name IN ('planned', 'unplanned', 'lwp', 'comp_off', 'encashed', 'carry_forward', 'maternity', 'paternity'))
 );
 
 
@@ -61,7 +62,7 @@ CREATE TABLE leave_status
 	name VARCHAR2(50),
 	
 	CONSTRAINT pk_leave_status PRIMARY KEY (leave_status_id),
-	CONSTRAINT c_leave_status_name CHECK (name IN ('planned', 'unplanned', 'lwp', 'comp_off', 'encashed', 'carry_forward', 'maternity', 'paternity'))
+	CONSTRAINT c_leave_status_name CHECK (name IN ('pending', 'approved', 'rejected', 'cancelled'))
 );
 
 
