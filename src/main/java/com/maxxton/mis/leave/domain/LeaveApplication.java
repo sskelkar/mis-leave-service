@@ -25,6 +25,8 @@ public class LeaveApplication
   private Long leaveTypeId;
   private Long leaveStatusId;
   private Long isBorrowed;
+  private String commentByManager;
+  private String appliedFor;
   
   public Long getLeaveApplicationId()
   {
@@ -113,5 +115,21 @@ public class LeaveApplication
   public void setIsBorrowed(Long isBorrowed)
   {
     this.isBorrowed = isBorrowed;
+  }
+  public String getCommentByManager()
+  {
+    return commentByManager;
+  }
+  public void setCommentByManager(String commentByManager)
+  {
+    this.commentByManager = commentByManager;
+  }
+  public String getAppliedFor()
+  {
+    return appliedFor;
+  }
+  public void setAppliedFor(String appliedFor)
+  {
+    this.appliedFor = appliedFor;
   }
 }

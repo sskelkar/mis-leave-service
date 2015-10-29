@@ -45,12 +45,21 @@ public class LeaveService
   private final String INDIA_TIMEZONE = "Asia/Kolkata";
     
   /**
-   * Simple method to return all the employees
+   * Simple method to return all the employees.
    * @return
    */
   public Iterable<Employee> findEmployees()
   {
     return employeeRepository.findAll();
+  }
+  
+  /**
+   * Simple method to return all the applied leaves of an employee.
+   * @return
+   */
+  public Iterable<LeaveApplication> findAppliedLeaves(Long employeeId)
+  {
+    return leaveApplicationRepository.findByEmployeeId(employeeId);
   }
   
   /**
@@ -73,7 +82,7 @@ public class LeaveService
   }
   
   /**
-   * Leave applied by an employee.
+   * Method to add the leave applied by an employee.
    * @param employeeId
    * @param leaveFrom
    * @param leaveTo
@@ -125,5 +134,18 @@ public class LeaveService
     // update employee leaves
     employeeLeave.setLeaveCount(availableLeaves - businessDays);
     employeeLeaveRepository.save(employeeLeave);
+  }
+  
+  /**
+   * Method to process an applied leave. Meaning the employee who had applied for a leave can cancel them himself. Or his manager can either approve or reject the leaves. 
+   * @param employeeId
+   * @param managerId
+   * @param leaveApplicationId
+   * @param leaveStatusId
+   * @return
+   */
+  public String processAppliedLeave(Long employeeId, Long managerId, Long leaveApplicationId, Long leaveStatusId)
+  {
+    return null;
   }
 }
