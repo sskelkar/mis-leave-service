@@ -1,6 +1,7 @@
 package com.maxxton.mis.leave.controller;
 
-import org.joda.time.DateTime;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.maxxton.mis.leave.domain.Employee;
 import com.maxxton.mis.leave.domain.EmployeeLeave;
+import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.service.LeaveService;
 
 @Controller
@@ -35,9 +37,17 @@ public class LeaveController
   
   @ResponseBody
   @RequestMapping(method=RequestMethod.PUT, value="/leave/application")
-  public void addAppliedLeave(@RequestParam Long employeeId, @RequestParam DateTime leaveFrom, @RequestParam DateTime leaveTo, @RequestParam Long leaveTypeId, 
+  public String  addAppliedLeave(@RequestParam Long employeeId, @RequestParam Date leaveFrom, @RequestParam Date leaveTo, @RequestParam Long leaveTypeId, 
       @RequestParam String commentByApplicant, @RequestParam Long appliedFor)
   {
-    leaveService.addAppliedLeave(employeeId, leaveFrom, leaveTo, leaveTypeId, commentByApplicant, appliedFor);
+    try
+    {
+      leaveService.addAppliedLeave(employeeId, leaveFrom, leaveTo, leaveTypeId, commentByApplicant, appliedFor);
+      return "application saved";
+    }
+    catch (InsufficientLeavesException e)
+    {
+      return e.getMessage();
+    }
   }
 }
