@@ -16,55 +16,34 @@ import com.maxxton.mis.leave.service.LeaveService;
 
 @RestController
 @RequestMapping(value = "/mis")
-public class LeaveController
-{
+public class LeaveController {
   @Autowired
   LeaveService leaveService;
-  
+
   @RequestMapping(method = RequestMethod.GET, value = "/employee")
-  public Iterable<Employee> getAllEmployees()
-  {
+  public Iterable<Employee> getAllEmployees() {
     return leaveService.findEmployees();
   }
-  
-  @RequestMapping(method=RequestMethod.PUT, value="/leave")
-  public EmployeeLeave addEmployeeLeaves(@RequestParam Long employeeId, @RequestParam Long year, @RequestParam Double leaveCount, @RequestParam Long leaveTypeId)
-  {      
+
+  @RequestMapping(method = RequestMethod.PUT, value = "/leave")
+  public EmployeeLeave addEmployeeLeaves(@RequestParam Long employeeId, @RequestParam Long year, @RequestParam Double leaveCount, @RequestParam Long leaveTypeId) {
     return leaveService.addEmployeeLeaves(employeeId, year, leaveCount, leaveTypeId);
   }
-  
-  @RequestMapping(method=RequestMethod.PUT, value="/leave/application")
-  public String addAppliedLeave(@RequestParam Long employeeId, @RequestParam Date leaveFrom, @RequestParam Date leaveTo, @RequestParam Long leaveTypeId, 
-      @RequestParam String commentByApplicant, @RequestParam Long appliedFor)
-  {
-    try
-    {
-      leaveService.addAppliedLeave(employeeId, leaveFrom, leaveTo, leaveTypeId, commentByApplicant, appliedFor);
-      return "application saved";
-    }
-    catch (InsufficientLeavesException e)
-    {
-      return e.getMessage();
-    }
+
+  @RequestMapping(method = RequestMethod.PUT, value = "/leave/application")
+  public void addAppliedLeave(@RequestParam Long employeeId, @RequestParam Date leaveFrom, @RequestParam Date leaveTo, @RequestParam Long leaveTypeId, @RequestParam String commentByApplicant,
+                              @RequestParam Long appliedFor) throws InsufficientLeavesException {
+    leaveService.addAppliedLeave(employeeId, leaveFrom, leaveTo, leaveTypeId, commentByApplicant, appliedFor);
   }
-  
-  @RequestMapping(method=RequestMethod.GET, value="/leave/application")
-  public Iterable<LeaveApplication> getAllAppliedLeaves(@RequestParam Long employeeId)
-  {
+
+  @RequestMapping(method = RequestMethod.GET, value = "/leave/application")
+  public Iterable<LeaveApplication> getAllAppliedLeaves(@RequestParam Long employeeId) {
     return leaveService.findAppliedLeaves(employeeId);
   }
-  
-  @RequestMapping(method=RequestMethod.POST, value="/leave/application")
-  public String processAppliedLeave(@RequestParam Long employeeId, @RequestParam Long managerId, @RequestParam Long leaveApplicationId, @RequestParam Long leaveStatusId)
-  {
-    try
-    {
-      String status = leaveService.processAppliedLeave(employeeId, managerId, leaveApplicationId, leaveStatusId);
-      return "leaves " + status;
-    }
-    catch (Exception e)
-    {
-      return "something went wrong";
-    }
+
+  @RequestMapping(method = RequestMethod.POST, value = "/leave/application")
+  public void processAppliedLeave(@RequestParam(value = "managerId", required = false) Long managerId, @RequestParam Long leaveApplicationId, @RequestParam Long leaveStatusId,
+                                  @RequestParam(value = "commentByManager", required = false) String commentByManager) {
+    leaveService.processAppliedLeave(managerId, leaveApplicationId, leaveStatusId, commentByManager);
   }
 }

@@ -9,12 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-public class LeaveApplication
-{
+public class LeaveApplication {
   @Id
-  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_LEAVE_APPLICATION")
-  @SequenceGenerator(name="SEQ_LEAVE_APPLICATION", sequenceName="SEQ_LEAVE_APPLICATION", allocationSize=1)
-  private Long leaveApplicationId; 
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_LEAVE_APPLICATION")
+  @SequenceGenerator(name = "SEQ_LEAVE_APPLICATION", sequenceName = "SEQ_LEAVE_APPLICATION", allocationSize = 1)
+  private Long leaveApplicationId;
   private Long employeeId;
   private Date leaveFrom;
   private Date leaveTo;
@@ -25,111 +24,119 @@ public class LeaveApplication
   private Long leaveTypeId;
   private Long leaveStatusId;
   private Long isBorrowed;
+  private Long managerId;
   private String commentByManager;
   private String appliedFor;
-  
-  public Long getLeaveApplicationId()
-  {
+
+  public Long getLeaveApplicationId() {
     return leaveApplicationId;
   }
-  public void setLeaveApplicationId(Long leaveApplicationId)
-  {
+
+  public void setLeaveApplicationId(Long leaveApplicationId) {
     this.leaveApplicationId = leaveApplicationId;
   }
-  public Long getEmployeeId()
-  {
+
+  public Long getEmployeeId() {
     return employeeId;
   }
-  public void setEmployeeId(Long employeeId)
-  {
+
+  public void setEmployeeId(Long employeeId) {
     this.employeeId = employeeId;
   }
-  public Date getLeaveFrom()
-  {
+
+  public Date getLeaveFrom() {
     return leaveFrom;
   }
-  public void setLeaveFrom(Date leaveFrom)
-  {
+
+  public void setLeaveFrom(Date leaveFrom) {
     this.leaveFrom = leaveFrom;
   }
-  public Date getLeaveTo()
-  {
+
+  public Date getLeaveTo() {
     return leaveTo;
   }
-  public void setLeaveTo(Date leaveTo)
-  {
+
+  public void setLeaveTo(Date leaveTo) {
     this.leaveTo = leaveTo;
   }
-  public Double getLeaveDuration()
-  {
+
+  public Double getLeaveDuration() {
     return leaveDuration;
   }
-  public void setLeaveDuration(Double leaveDuration)
-  {
+
+  public void setLeaveDuration(Double leaveDuration) {
     this.leaveDuration = leaveDuration;
   }
-  public Double getNoOfWorkingDays()
-  {
+
+  public Double getNoOfWorkingDays() {
     return NoOfWorkingDays;
   }
-  public void setNoOfWorkingDays(Double noOfWorkingDays)
-  {
+
+  public void setNoOfWorkingDays(Double noOfWorkingDays) {
     NoOfWorkingDays = noOfWorkingDays;
   }
-  public Date getApplicationDate()
-  {
+
+  public Date getApplicationDate() {
     return applicationDate;
   }
-  public void setApplicationDate(Date applicationDate)
-  {
+
+  public void setApplicationDate(Date applicationDate) {
     this.applicationDate = applicationDate;
   }
-  public String getCommentByApplicant()
-  {
+
+  public String getCommentByApplicant() {
     return commentByApplicant;
   }
-  public void setCommentByApplicant(String commentByApplicant)
-  {
+
+  public void setCommentByApplicant(String commentByApplicant) {
     this.commentByApplicant = commentByApplicant;
   }
-  public Long getLeaveTypeId()
-  {
+
+  public Long getLeaveTypeId() {
     return leaveTypeId;
   }
-  public void setLeaveTypeId(Long leaveTypeId)
-  {
+
+  public void setLeaveTypeId(Long leaveTypeId) {
     this.leaveTypeId = leaveTypeId;
   }
-  public Long getLeaveStatusId()
-  {
+
+  public Long getLeaveStatusId() {
     return leaveStatusId;
   }
-  public void setLeaveStatusId(Long leaveStatusId)
-  {
+
+  public void setLeaveStatusId(Long leaveStatusId) {
     this.leaveStatusId = leaveStatusId;
   }
-  public Long getIsBorrowed()
-  {
+
+  public Long getIsBorrowed() {
     return isBorrowed;
   }
-  public void setIsBorrowed(Long isBorrowed)
-  {
+
+  public void setIsBorrowed(Long isBorrowed) {
     this.isBorrowed = isBorrowed;
   }
-  public String getCommentByManager()
-  {
+
+  public Long getManagerId() {
+    return managerId;
+  }
+
+  public void setManagerId(Long managerId) {
+    this.managerId = managerId;
+  }
+
+  public String getCommentByManager() {
     return commentByManager;
   }
-  public void setCommentByManager(String commentByManager)
-  {
+
+  public void setCommentByManager(String commentByManager) {
     this.commentByManager = commentByManager;
   }
-  public String getAppliedFor()
-  {
+
+  public String getAppliedFor() {
     return appliedFor;
   }
-  public void setAppliedFor(String appliedFor)
-  {
+
+  public void setAppliedFor(String appliedFor) {
     this.appliedFor = appliedFor;
   }
 }

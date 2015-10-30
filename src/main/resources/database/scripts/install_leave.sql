@@ -82,6 +82,7 @@ CREATE TABLE leave_application
 	leave_type_id NUMBER NOT NULL,
 	leave_status_id NUMBER NOT NULL,
 	is_borrowed NUMBER,
+	manager_id NUMBER,
 	comment_by_manager VARCHAR2(80),
 	applied_for VARCHAR2(20),
 	
@@ -89,7 +90,8 @@ CREATE TABLE leave_application
 	CONSTRAINT fk_leave_application_emp FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
 	CONSTRAINT fk_leave_application_type FOREIGN KEY (leave_type_id) REFERENCES leave_type(leave_type_id),
 	CONSTRAINT fk_leave_application_status FOREIGN KEY (leave_status_id) REFERENCES leave_status(leave_status_id),
-	CONSTRAINT c_leave_application_for CHECK (applied_for IN ('full_day', 'first_half', 'second_half'))	
+	CONSTRAINT fk_leave_application_mgr FOREIGN KEY (manager_id) REFERENCES employee(employee_id),
+	CONSTRAINT c_leave_application_for CHECK (applied_for IN ('full_day', 'first_half', 'second_half'))
 );
 
 
