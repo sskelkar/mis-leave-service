@@ -48,17 +48,28 @@ public class LeaveService {
    * 
    * @return
    */
-  public Iterable<Employee> findEmployees() {
+  public Iterable<Employee> getAllEmployees() {
     return employeeRepository.findAll();
   }
 
   /**
    * Simple method to return all the applied leaves of an employee.
    * 
+   * @param employeeId
+   * @return List of applied leaves.
+   */
+  public Iterable<LeaveApplication> getAllAppliedLeaves(Long employeeId) {
+    return leaveApplicationRepository.findByEmployeeId(employeeId);
+  }
+
+  /**
+   * Method to return all applied leaves of an employee with status 'pending'.
+   * 
+   * @param employeeId
    * @return
    */
-  public Iterable<LeaveApplication> findAppliedLeaves(Long employeeId) {
-    return leaveApplicationRepository.findByEmployeeId(employeeId);
+  public Iterable<LeaveApplication> getAllPendingLeaves(Long employeeId) {
+    return leaveApplicationRepository.findByEmployeeIdAndLeaveStatusId(employeeId, leaveStatusRepository.findByName(LEAVE_STATUS_PENDING).getLeaveStatusId());
   }
 
   /**
@@ -68,20 +79,20 @@ public class LeaveService {
    * @param year
    * @param leaveCount
    * @param leaveTypeId
-   * @return
+   * @return employeeLeaveId of the added leave.
    */
-  public EmployeeLeave addEmployeeLeaves(Long employeeId, Long year, Double leaveCount, Long leaveTypeId) {
+  public Long addEmployeeLeaves(Long employeeId, Long year, Double leaveCount, Long leaveTypeId) {
     EmployeeLeave employeeLeave = new EmployeeLeave();
     employeeLeave.setEmployeeId(employeeId);
     employeeLeave.setYear(year);
     employeeLeave.setLeaveCount(leaveCount);
     employeeLeave.setLeaveTypeId(leaveTypeId);
 
-    return employeeLeaveRepository.save(employeeLeave);
+    return employeeLeaveRepository.save(employeeLeave).getEmployeeLeaveId();
   }
 
   /**
-   * Method to add the leave applied by an employee.
+   * Method to add the leave applied by an employee. Borrowing leaves from future and applying for half day has not been implemented for now.
    * 
    * @param employeeId
    * @param leaveFrom
@@ -89,9 +100,10 @@ public class LeaveService {
    * @param leaveTypeId
    * @param commentByApplicant
    * @param appliedFor
+   * @return leaveApplicationId of applied leave
    * @throws InsufficientLeavesException
    */
-  public void addAppliedLeave(Long employeeId, Date leaveFrom, Date leaveTo, Long leaveTypeId, String commentByApplicant, Long appliedFor) throws InsufficientLeavesException {
+  public Long applyForLeave(Long employeeId, Date leaveFrom, Date leaveTo, Long leaveTypeId, String commentByApplicant, Long appliedFor) throws InsufficientLeavesException {
     Set<LocalDate> indiaHolidays = new HashSet<LocalDate>();
     for (PublicHoliday holiday : publicHolidayRepository.findAll()) {
       indiaHolidays.add(new LocalDate(holiday.getHolidayDate()));
@@ -127,12 +139,13 @@ public class LeaveService {
     LocalDate today = new LocalDate(DateTimeZone.forID(INDIA_TIMEZONE));
     leaveApplication.setApplicationDate(today.toDate());
 
-    // save the applied leave
-    leaveApplicationRepository.save(leaveApplication);
-
     // update employee leaves
     employeeLeave.setLeaveCount(availableLeaves - businessDays);
     employeeLeaveRepository.save(employeeLeave);
+
+    // save the applied leave
+    LeaveApplication savedLeave = leaveApplicationRepository.save(leaveApplication);
+    return savedLeave.getLeaveApplicationId();
   }
 
   /**
@@ -143,9 +156,9 @@ public class LeaveService {
    * @param leaveApplicationId
    * @param leaveStatusId
    * @param commentByManager
-   * @return
+   * @return leaveApplicationId of the processed leave.
    */
-  public void processAppliedLeave(Long managerId, Long leaveApplicationId, Long leaveStatusId, String commentByManager) {
+  public Long processAppliedLeave(Long managerId, Long leaveApplicationId, Long leaveStatusId, String commentByManager) {
     LeaveApplication leaveApplication = leaveApplicationRepository.findByLeaveApplicationId(leaveApplicationId);
 
     leaveApplication.setLeaveStatusId(leaveStatusId);
@@ -162,5 +175,7 @@ public class LeaveService {
       employeeLeave.setLeaveCount(employeeLeave.getLeaveCount() + leaveApplication.getNoOfWorkingDays());
       employeeLeaveRepository.save(employeeLeave);
     }
+
+    return leaveApplicationId;
   }
 }
