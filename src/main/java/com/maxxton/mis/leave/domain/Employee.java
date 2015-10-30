@@ -8,12 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Employee
-{
+public class Employee {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long employeeId;
-  
+
   private String firstName;
   private String middleName;
   private String lastName;
@@ -31,149 +30,148 @@ public class Employee
   private String emergencyContactPerson;
   private String emergencyContactPhoneNumber;
   private String bloodGroup;
-   
-  public Long getEmployeeId()
-  {
+
+  public Long getEmployeeId() {
     return employeeId;
   }
-  public void setEmployeeId(Long employeeId)
-  {
+
+  public void setEmployeeId(Long employeeId) {
     this.employeeId = employeeId;
   }
-  public String getFirstName()
-  {
+
+  public String getFirstName() {
     return firstName;
   }
-  public void setFirstName(String firstName)
-  {
+
+  public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
-  public String getMiddleName()
-  {
+
+  public String getMiddleName() {
     return middleName;
   }
-  public void setMiddleName(String middleName)
-  {
+
+  public void setMiddleName(String middleName) {
     this.middleName = middleName;
   }
-  public String getLastName()
-  {
+
+  public String getLastName() {
     return lastName;
   }
-  public void setLastName(String lastName)
-  {
+
+  public void setLastName(String lastName) {
     this.lastName = lastName;
   }
-  public String getUserName()
-  {
+
+  public String getUserName() {
     return userName;
   }
-  public void setUserName(String userName)
-  {
+
+  public void setUserName(String userName) {
     this.userName = userName;
   }
-  public String getPassword()
-  {
+
+  public String getPassword() {
     return password;
   }
-  public void setPassword(String password)
-  {
+
+  public void setPassword(String password) {
     this.password = password;
   }
-  public String getEmail()
-  {
+
+  public String getEmail() {
     return email;
   }
-  public void setEmail(String email)
-  {
+
+  public void setEmail(String email) {
     this.email = email;
   }
-  public Date getBirthDate()
-  {
+
+  public Date getBirthDate() {
     return birthDate;
   }
-  public void setBirthDate(Date birthDate)
-  {
+
+  public void setBirthDate(Date birthDate) {
     this.birthDate = birthDate;
   }
-  public Date getJoiningDate()
-  {
+
+  public Date getJoiningDate() {
     return joiningDate;
   }
-  public void setJoiningDate(Date joiningDate)
-  {
+
+  public void setJoiningDate(Date joiningDate) {
     this.joiningDate = joiningDate;
   }
-  public String getSex()
-  {
+
+  public String getSex() {
     return sex;
   }
-  public void setSex(String sex)
-  {
+
+  public void setSex(String sex) {
     this.sex = sex;
   }
-  public Double getProbationPeriodMonths()
-  {
+
+  public Double getProbationPeriodMonths() {
     return probationPeriodMonths;
   }
-  public void setProbationPeriodMonths(Double probationPeriodMonths)
-  {
+
+  public void setProbationPeriodMonths(Double probationPeriodMonths) {
     this.probationPeriodMonths = probationPeriodMonths;
   }
-  public Date getReleaseDate()
-  {
+
+  public Date getReleaseDate() {
     return releaseDate;
   }
-  public void setReleaseDate(Date releaseDate)
-  {
+
+  public void setReleaseDate(Date releaseDate) {
     this.releaseDate = releaseDate;
   }
-  public String getPanNumber()
-  {
+
+  public String getPanNumber() {
     return panNumber;
   }
-  public void setPanNumber(String panNumber)
-  {
+
+  public void setPanNumber(String panNumber) {
     this.panNumber = panNumber;
   }
-  public String getPassportNumber()
-  {
+
+  public String getPassportNumber() {
     return passportNumber;
   }
-  public void setPassportNumber(String passportNumber)
-  {
+
+  public void setPassportNumber(String passportNumber) {
     this.passportNumber = passportNumber;
   }
-  public Date getPassportValidTill()
-  {
+
+  public Date getPassportValidTill() {
     return passportValidTill;
   }
-  public void setPassportValidTill(Date passportValidTill)
-  {
+
+  public void setPassportValidTill(Date passportValidTill) {
     this.passportValidTill = passportValidTill;
   }
-  public String getEmergencyContactPerson()
-  {
+
+  public String getEmergencyContactPerson() {
     return emergencyContactPerson;
   }
-  public void setEmergencyContactPerson(String emergencyContactPerson)
-  {
+
+  public void setEmergencyContactPerson(String emergencyContactPerson) {
     this.emergencyContactPerson = emergencyContactPerson;
   }
-  public String getEmergencyContactPhoneNumber()
-  {
+
+  public String getEmergencyContactPhoneNumber() {
     return emergencyContactPhoneNumber;
   }
-  public void setEmergencyContactPhoneNumber(String emergencyContactPhoneNumber)
-  {
+
+  public void setEmergencyContactPhoneNumber(String emergencyContactPhoneNumber) {
     this.emergencyContactPhoneNumber = emergencyContactPhoneNumber;
   }
-  public String getBloodGroup()
-  {
+
+  public String getBloodGroup() {
     return bloodGroup;
   }
-  public void setBloodGroup(String bloodGroup)
-  {
+
+  public void setBloodGroup(String bloodGroup) {
     this.bloodGroup = bloodGroup;
   }
 }

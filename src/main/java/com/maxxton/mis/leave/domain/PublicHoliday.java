@@ -8,37 +8,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class PublicHoliday
-{
+public class PublicHoliday {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
-  private Long publicHolidayId;  
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long publicHolidayId;
   private Date holidayDate;
   private String name;
-  
-  public Long getPublicHolidayId()
-  {
+
+  public Long getPublicHolidayId() {
     return publicHolidayId;
   }
-  public void setPublicHolidayId(Long publicHolidayId)
-  {
+
+  public void setPublicHolidayId(Long publicHolidayId) {
     this.publicHolidayId = publicHolidayId;
   }
-  public Date getHolidayDate()
-  {
+
+  public Date getHolidayDate() {
     return holidayDate;
   }
-  public void setHolidayDate(Date holidayDate)
-  {
+
+  public void setHolidayDate(Date holidayDate) {
     this.holidayDate = holidayDate;
   }
-  public String getName()
-  {
+
+  public String getName() {
     return name;
   }
-  public void setName(String name)
-  {
+
+  public void setName(String name) {
     this.name = name;
   }
-  
+
 }

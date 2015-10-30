@@ -7,55 +7,53 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-public class EmployeeLeave
-{
+public class EmployeeLeave {
   @Id
-  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_EMPLOYEE_LEAVE")
-  @SequenceGenerator(name="SEQ_EMPLOYEE_LEAVE", sequenceName="SEQ_EMPLOYEE_LEAVE", allocationSize=1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_EMPLOYEE_LEAVE")
+  @SequenceGenerator(name = "SEQ_EMPLOYEE_LEAVE", sequenceName = "SEQ_EMPLOYEE_LEAVE", allocationSize = 1)
   private Long employeeLeaveId;
   private Long employeeId;
   private Long year;
   private Double leaveCount;
   private Long leaveTypeId;
 
-  public Long getEmployeeLeaveId()
-  {
+  public Long getEmployeeLeaveId() {
     return employeeLeaveId;
   }
-  public void setEmployeeLeaveId(Long employeeLeaveId)
-  {
+
+  public void setEmployeeLeaveId(Long employeeLeaveId) {
     this.employeeLeaveId = employeeLeaveId;
   }
-  public Long getEmployeeId()
-  {
+
+  public Long getEmployeeId() {
     return employeeId;
   }
-  public void setEmployeeId(Long employeeId)
-  {
+
+  public void setEmployeeId(Long employeeId) {
     this.employeeId = employeeId;
   }
-  public Long getYear()
-  {
+
+  public Long getYear() {
     return year;
   }
-  public void setYear(Long year)
-  {
+
+  public void setYear(Long year) {
     this.year = year;
   }
-  public Double getLeaveCount()
-  {
+
+  public Double getLeaveCount() {
     return leaveCount;
   }
-  public void setLeaveCount(Double leaveCount)
-  {
+
+  public void setLeaveCount(Double leaveCount) {
     this.leaveCount = leaveCount;
   }
-  public Long getLeaveTypeId()
-  {
+
+  public Long getLeaveTypeId() {
     return leaveTypeId;
   }
-  public void setLeaveTypeId(Long leaveTypeId)
-  {
+
+  public void setLeaveTypeId(Long leaveTypeId) {
     this.leaveTypeId = leaveTypeId;
   }
 }

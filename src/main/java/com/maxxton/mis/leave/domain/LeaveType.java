@@ -6,27 +6,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class LeaveType
-{
+public class LeaveType {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
-  private Long leaveTypeId; 
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long leaveTypeId;
   private String name;
-  
-  public Long getLeaveTypeId()
-  {
+
+  public Long getLeaveTypeId() {
     return leaveTypeId;
   }
-  public void setLeaveTypeId(Long leaveTypeId)
-  {
+
+  public void setLeaveTypeId(Long leaveTypeId) {
     this.leaveTypeId = leaveTypeId;
   }
-  public String getName()
-  {
+
+  public String getName() {
     return name;
   }
-  public void setName(String name)
-  {
+
+  public void setName(String name) {
     this.name = name;
   }
 }

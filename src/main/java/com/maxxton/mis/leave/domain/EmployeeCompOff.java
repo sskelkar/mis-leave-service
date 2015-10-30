@@ -8,10 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class EmployeeCompOff
-{
+public class EmployeeCompOff {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long employeeCompOffId;
   private Long employeeLeaveId;
   private Long managerId;
@@ -19,53 +18,52 @@ public class EmployeeCompOff
   private Date startDate;
   private Date endDate;
 
-  public Long getEmployeeCompOffId()
-  {
+  public Long getEmployeeCompOffId() {
     return employeeCompOffId;
   }
-  public void setEmployeeCompOffId(Long employeeCompOffId)
-  {
+
+  public void setEmployeeCompOffId(Long employeeCompOffId) {
     this.employeeCompOffId = employeeCompOffId;
   }
-  public Long getEmployeeLeaveId()
-  {
+
+  public Long getEmployeeLeaveId() {
     return employeeLeaveId;
   }
-  public void setEmployeeLeaveId(Long employeeLeaveId)
-  {
+
+  public void setEmployeeLeaveId(Long employeeLeaveId) {
     this.employeeLeaveId = employeeLeaveId;
   }
-  public Long getManagerId()
-  {
+
+  public Long getManagerId() {
     return managerId;
   }
-  public void setManagerId(Long managerId)
-  {
+
+  public void setManagerId(Long managerId) {
     this.managerId = managerId;
   }
-  public String getCommentByManager()
-  {
+
+  public String getCommentByManager() {
     return commentByManager;
   }
-  public void setCommentByManager(String commentByManager)
-  {
+
+  public void setCommentByManager(String commentByManager) {
     this.commentByManager = commentByManager;
   }
-  public Date getStartDate()
-  {
+
+  public Date getStartDate() {
     return startDate;
   }
-  public void setStartDate(Date startDate)
-  {
+
+  public void setStartDate(Date startDate) {
     this.startDate = startDate;
   }
-  public Date getEndDate()
-  {
+
+  public Date getEndDate() {
     return endDate;
   }
-  public void setEndDate(Date endDate)
-  {
+
+  public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
-  
+
 }
