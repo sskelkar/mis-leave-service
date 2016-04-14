@@ -8,3 +8,6 @@ spring:
     username: mis_kopie
     password: mis_kopie
     
+server:
+  port: 72
+
