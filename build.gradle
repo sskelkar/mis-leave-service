@@ -22,8 +22,17 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
-    mavenLocal()
+  mavenCentral()
+  mavenLocal()
+    
+  maven {
+    name 'Maxxton Private repository'
+    url 'http://10.64.133.2/repository/internal'
+    credentials {
+      username 'microservices'
+      password 'M1cr053rv1c35!'
+    }
+  }    
 }
 
 
