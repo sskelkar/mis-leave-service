@@ -10,21 +10,17 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.maxxton.mis.leave.domain.Employee;
 import com.maxxton.mis.leave.domain.EmployeeLeave;
 import com.maxxton.mis.leave.domain.LeaveApplication;
 import com.maxxton.mis.leave.domain.PublicHoliday;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.repository.EmployeeLeaveRepository;
-import com.maxxton.mis.leave.repository.EmployeeRepository;
 import com.maxxton.mis.leave.repository.LeaveApplicationRepository;
 import com.maxxton.mis.leave.repository.LeaveStatusRepository;
 import com.maxxton.mis.leave.repository.PublicHolidayRepository;
 
 @Service
 public class LeaveService {
-  @Autowired
-  private EmployeeRepository employeeRepository;
 
   @Autowired
   private EmployeeLeaveRepository employeeLeaveRepository;
@@ -38,19 +34,10 @@ public class LeaveService {
   @Autowired
   private PublicHolidayRepository publicHolidayRepository;
 
-  private final String LEAVE_STATUS_PENDING = "pending";
-  private final String LEAVE_STATUS_CANCELLED = "cancelled";
-  private final String LEAVE_STATUS_REJECTED = "rejected";
-  private final String INDIA_TIMEZONE = "Asia/Kolkata";
-
-  /**
-   * Simple method to return all the employees.
-   * 
-   * @return
-   */
-  public Iterable<Employee> getAllEmployees() {
-    return employeeRepository.findAll();
-  }
+  private static final String LEAVE_STATUS_PENDING = "pending";
+  private static final String LEAVE_STATUS_CANCELLED = "cancelled";
+  private static final String LEAVE_STATUS_REJECTED = "rejected";
+  private static final String INDIA_TIMEZONE = "Asia/Kolkata";
 
   /**
    * Simple method to return all the applied leaves of an employee.
