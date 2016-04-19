@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.maxxton.mis.leave.domain.AvailableLeaveCount;
 import com.maxxton.mis.leave.domain.LeaveApplication;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.service.LeaveService;
@@ -34,6 +35,11 @@ public class LeaveController {
   @RequestMapping(method = RequestMethod.GET, value = "/leave/application")
   public Iterable<LeaveApplication> getAllAppliedLeaves(@RequestParam Long employeeId) {
     return leaveService.getAllAppliedLeaves(employeeId);
+  }
+  
+  @RequestMapping(method = RequestMethod.GET, value = "/leave/available")
+  public AvailableLeaveCount getAllAvailableLeaves(@RequestParam Long employeeId) {
+    return leaveService.getAllAvailableLeaves(employeeId);
   }
 
   @RequestMapping(method = RequestMethod.POST, value = "/leave/application")

@@ -1,6 +1,7 @@
 package com.maxxton.mis.leave.service;
 
 import java.time.DayOfWeek;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +11,7 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.maxxton.mis.leave.domain.AvailableLeaveCount;
 import com.maxxton.mis.leave.domain.EmployeeLeave;
 import com.maxxton.mis.leave.domain.LeaveApplication;
 import com.maxxton.mis.leave.domain.PublicHoliday;
@@ -59,6 +61,23 @@ public class LeaveService {
     return leaveApplicationRepository.findByEmployeeIdAndLeaveStatusId(employeeId, leaveStatusRepository.findByName(LEAVE_STATUS_PENDING).getLeaveStatusId());
   }
 
+  public AvailableLeaveCount getAllAvailableLeaves(Long employeeId) {
+    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+    AvailableLeaveCount leaveCount = new AvailableLeaveCount();
+    
+    Iterable<EmployeeLeave> leaves = employeeLeaveRepository.findByEmployeeIdAndYearGreaterThanEqual(employeeId, Long.valueOf(currentYear));
+    
+    leaves.forEach(leave -> {
+      if(leave.getLeaveType().getName().equalsIgnoreCase("comp_off"))
+        leaveCount.setCompOff(leaveCount.getCompOff() + leave.getLeaveCount());
+      else if(leave.getLeaveType().getName().equalsIgnoreCase("unplanned"))
+        leaveCount.setUnplanned(leaveCount.getUnplanned() + leave.getLeaveCount());
+      else if(leave.getLeaveType().getName().equalsIgnoreCase("planned"))
+        leaveCount.setPlanned(leaveCount.getPlanned() + leave.getLeaveCount());      
+    });
+    
+    return leaveCount;
+  }
   /**
    * To add leaves of a particular type for an employee by his/her manager.
    * 
@@ -73,7 +92,7 @@ public class LeaveService {
     employeeLeave.setEmployeeId(employeeId);
     employeeLeave.setYear(year);
     employeeLeave.setLeaveCount(leaveCount);
-    employeeLeave.setLeaveTypeId(leaveTypeId);
+//    employeeLeave.setLeaveTypeId(leaveTypeId);
 
     return employeeLeaveRepository.save(employeeLeave).getEmployeeLeaveId();
   }
@@ -108,7 +127,7 @@ public class LeaveService {
     }
 
     // check if sufficient number of leaves are present for this employee of this leave type
-    EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeIdAndYear(employeeId, leaveTypeId, new Long(leaveFromJoda.getYear()));
+    EmployeeLeave employeeLeave = null;//employeeLeaveRepository.findByEmployeeIdAndLeaveTypeIdAndYear(employeeId, leaveTypeId, new Long(leaveFromJoda.getYear()));
     Double availableLeaves = employeeLeave.getLeaveCount();
     if (availableLeaves < businessDays)
       throw new InsufficientLeavesException();
@@ -158,7 +177,7 @@ public class LeaveService {
     // if leaves were cancelled or rejected, their count must be added back to employee leave count.
     if (leaveStatusId == leaveStatusRepository.findByName(LEAVE_STATUS_REJECTED).getLeaveStatusId() || leaveStatusId == leaveStatusRepository.findByName(LEAVE_STATUS_CANCELLED).getLeaveStatusId()) {
       LocalDate leaveFrom = new LocalDate(leaveApplication.getLeaveFrom());
-      EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeIdAndYear(leaveApplication.getEmployeeId(), leaveApplication.getLeaveTypeId(), new Long(leaveFrom.getYear()));
+      EmployeeLeave employeeLeave = null;//employeeLeaveRepository.findByEmployeeIdAndLeaveTypeIdAndYear(leaveApplication.getEmployeeId(), leaveApplication.getLeaveTypeId(), new Long(leaveFrom.getYear()));
       employeeLeave.setLeaveCount(employeeLeave.getLeaveCount() + leaveApplication.getNoOfWorkingDays());
       employeeLeaveRepository.save(employeeLeave);
     }

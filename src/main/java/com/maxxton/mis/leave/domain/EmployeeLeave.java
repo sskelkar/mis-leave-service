@@ -1,9 +1,12 @@
 package com.maxxton.mis.leave.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -15,7 +18,10 @@ public class EmployeeLeave {
   private Long employeeId;
   private Long year;
   private Double leaveCount;
-  private Long leaveTypeId;
+  
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "leave_type_id")
+  private LeaveType leaveType;
 
   public Long getEmployeeLeaveId() {
     return employeeLeaveId;
@@ -49,11 +55,12 @@ public class EmployeeLeave {
     this.leaveCount = leaveCount;
   }
 
-  public Long getLeaveTypeId() {
-    return leaveTypeId;
+  public LeaveType getLeaveType() {
+    return leaveType;
   }
 
-  public void setLeaveTypeId(Long leaveTypeId) {
-    this.leaveTypeId = leaveTypeId;
+  public void setLeaveType(LeaveType leaveType) {
+    this.leaveType = leaveType;
   }
+
 }
