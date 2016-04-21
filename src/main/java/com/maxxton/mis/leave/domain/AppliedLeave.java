@@ -2,23 +2,27 @@ package com.maxxton.mis.leave.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
-public class LeaveApplication {
+@Table(name = "leave_application")
+public class AppliedLeave {
   @Id
+  @Column(name = "leave_application_id")
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_LEAVE_APPLICATION")
   @SequenceGenerator(name = "SEQ_LEAVE_APPLICATION", sequenceName = "SEQ_LEAVE_APPLICATION", allocationSize = 1)
-  private Long leaveApplicationId;
+  private Long appliedLeaveId;
   private Long employeeId;
   private Date leaveFrom;
   private Date leaveTo;
   private Double leaveDuration;
-  private Double NoOfWorkingDays;
+  private Double noOfWorkingDays;
   private Date applicationDate;
   private String commentByApplicant;
   private Long leaveTypeId;
@@ -26,14 +30,15 @@ public class LeaveApplication {
   private Long isBorrowed;
   private Long managerId;
   private String commentByManager;
-  private String appliedFor;
-
-  public Long getLeaveApplicationId() {
-    return leaveApplicationId;
+  private String leaveFromHalf;
+  private String leaveToHalf;
+  
+  public Long getAppliedLeaveId() {
+    return appliedLeaveId;
   }
 
-  public void setLeaveApplicationId(Long leaveApplicationId) {
-    this.leaveApplicationId = leaveApplicationId;
+  public void setAppliedLeaveId(Long appliedLeaveId) {
+    this.appliedLeaveId = appliedLeaveId;
   }
 
   public Long getEmployeeId() {
@@ -69,11 +74,11 @@ public class LeaveApplication {
   }
 
   public Double getNoOfWorkingDays() {
-    return NoOfWorkingDays;
+    return noOfWorkingDays;
   }
 
   public void setNoOfWorkingDays(Double noOfWorkingDays) {
-    NoOfWorkingDays = noOfWorkingDays;
+    this.noOfWorkingDays = noOfWorkingDays;
   }
 
   public Date getApplicationDate() {
@@ -132,11 +137,20 @@ public class LeaveApplication {
     this.commentByManager = commentByManager;
   }
 
-  public String getAppliedFor() {
-    return appliedFor;
+  public String getLeaveFromHalf() {
+    return leaveFromHalf;
   }
 
-  public void setAppliedFor(String appliedFor) {
-    this.appliedFor = appliedFor;
+  public void setLeaveFromHalf(String leaveFromHalf) {
+    this.leaveFromHalf = leaveFromHalf;
   }
+
+  public String getLeaveToHalf() {
+    return leaveToHalf;
+  }
+
+  public void setLeaveToHalf(String leaveToHalf) {
+    this.leaveToHalf = leaveToHalf;
+  }
+
 }

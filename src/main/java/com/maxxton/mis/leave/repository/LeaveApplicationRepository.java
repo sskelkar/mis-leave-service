@@ -2,12 +2,12 @@ package com.maxxton.mis.leave.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.maxxton.mis.leave.domain.LeaveApplication;
+import com.maxxton.mis.leave.domain.AppliedLeave;
 
-public interface LeaveApplicationRepository extends CrudRepository<LeaveApplication, Long> {
-  Iterable<LeaveApplication> findByEmployeeId(Long employeeId);
+public interface LeaveApplicationRepository extends CrudRepository<AppliedLeave, Long> {
+  Iterable<AppliedLeave> findByEmployeeId(Long employeeId);
 
-  Iterable<LeaveApplication> findByEmployeeIdAndLeaveStatusId(Long employeeId, Long leaveStatusId);
+  Iterable<AppliedLeave> findByEmployeeIdAndLeaveStatusId(Long employeeId, Long leaveStatusId);
 
-  LeaveApplication findByLeaveApplicationId(Long leaveApplicationId);
+  AppliedLeave findByAppliedLeaveId(Long appliedLeaveId);
 }

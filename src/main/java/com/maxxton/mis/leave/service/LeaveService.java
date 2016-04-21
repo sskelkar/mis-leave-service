@@ -11,9 +11,9 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.maxxton.mis.leave.domain.AppliedLeave;
 import com.maxxton.mis.leave.domain.AvailableLeaveCount;
 import com.maxxton.mis.leave.domain.EmployeeLeave;
-import com.maxxton.mis.leave.domain.LeaveApplication;
 import com.maxxton.mis.leave.domain.PublicHoliday;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.repository.EmployeeLeaveRepository;
@@ -47,7 +47,7 @@ public class LeaveService {
    * @param employeeId
    * @return List of applied leaves.
    */
-  public Iterable<LeaveApplication> getAllAppliedLeaves(Long employeeId) {
+  public Iterable<AppliedLeave> getAllAppliedLeaves(Long employeeId) {
     return leaveApplicationRepository.findByEmployeeId(employeeId);
   }
 
@@ -57,7 +57,7 @@ public class LeaveService {
    * @param employeeId
    * @return
    */
-  public Iterable<LeaveApplication> getAllPendingLeaves(Long employeeId) {
+  public Iterable<AppliedLeave> getAllPendingLeaves(Long employeeId) {
     return leaveApplicationRepository.findByEmployeeIdAndLeaveStatusId(employeeId, leaveStatusRepository.findByName(LEAVE_STATUS_PENDING).getLeaveStatusId());
   }
 
@@ -132,7 +132,7 @@ public class LeaveService {
     if (availableLeaves < businessDays)
       throw new InsufficientLeavesException();
 
-    LeaveApplication leaveApplication = new LeaveApplication();
+    AppliedLeave leaveApplication = new AppliedLeave();
     leaveApplication.setEmployeeId(employeeId);
     leaveApplication.setLeaveFrom(leaveFrom);
     leaveApplication.setLeaveTo(leaveTo);
@@ -150,8 +150,8 @@ public class LeaveService {
     employeeLeaveRepository.save(employeeLeave);
 
     // save the applied leave
-    LeaveApplication savedLeave = leaveApplicationRepository.save(leaveApplication);
-    return savedLeave.getLeaveApplicationId();
+    AppliedLeave savedLeave = leaveApplicationRepository.save(leaveApplication);
+    return savedLeave.getAppliedLeaveId();
   }
 
   /**
@@ -159,13 +159,13 @@ public class LeaveService {
    * 
    * @param managerId
    *          Employee id of approving/rejecting employee. This will be null if an employee is cancelling his/her own leaves.
-   * @param leaveApplicationId
+   * @param appliedLeaveId
    * @param leaveStatusId
    * @param commentByManager
    * @return leaveApplicationId of the processed leave.
    */
-  public Long processAppliedLeave(Long managerId, Long leaveApplicationId, Long leaveStatusId, String commentByManager) {
-    LeaveApplication leaveApplication = leaveApplicationRepository.findByLeaveApplicationId(leaveApplicationId);
+  public Long processAppliedLeave(Long managerId, Long appliedLeaveId, Long leaveStatusId, String commentByManager) {
+    AppliedLeave leaveApplication = leaveApplicationRepository.findByAppliedLeaveId(appliedLeaveId);
 
     leaveApplication.setLeaveStatusId(leaveStatusId);
     if (managerId != null)
@@ -182,6 +182,6 @@ public class LeaveService {
       employeeLeaveRepository.save(employeeLeave);
     }
 
-    return leaveApplicationId;
+    return appliedLeaveId;
   }
 }
