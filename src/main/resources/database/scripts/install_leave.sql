@@ -49,7 +49,7 @@ CREATE TABLE leave_type
   name VARCHAR2(50),
   
   CONSTRAINT pk_leave_type PRIMARY KEY (leave_type_id),
-  CONSTRAINT c_leave_type_name CHECK (name IN ('planned', 'unplanned', 'lwp', 'comp_off', 'encashed', 'carry_forward', 'maternity', 'paternity'))
+  CONSTRAINT c_leave_type_name CHECK (name IN ('Planned', 'Unplanned', 'Leave Without Pay', 'Compensatory Off', 'Encashed', 'Carry Forward', 'Maternity', 'Paternity'))
 );
 
 
@@ -62,7 +62,7 @@ CREATE TABLE leave_status
   name VARCHAR2(50),
   
   CONSTRAINT pk_leave_status PRIMARY KEY (leave_status_id),
-  CONSTRAINT c_leave_status_name CHECK (name IN ('pending', 'approved', 'rejected', 'cancelled'))
+  CONSTRAINT c_leave_status_name CHECK (name IN ('Pending', 'Approved', 'Rejected', 'Cancelled'))
 );
 
 
