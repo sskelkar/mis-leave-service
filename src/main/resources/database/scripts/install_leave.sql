@@ -49,7 +49,7 @@ CREATE TABLE leave_type
   name VARCHAR2(50),
   
   CONSTRAINT pk_leave_type PRIMARY KEY (leave_type_id),
-  CONSTRAINT c_leave_type_name CHECK (name IN ('Planned', 'Unplanned', 'Leave Without Pay', 'Compensatory Off', 'Encashed', 'Carry Forward', 'Maternity', 'Paternity'))
+  CONSTRAINT c_leave_type_name CHECK (name IN ('Planned', 'Unplanned', 'Leave Without Pay', 'Compensatory Off', 'Encashed', 'Carry Forward', 'Maternity', 'Paternity', 'Borrowed'))
 );
 
 
@@ -83,7 +83,6 @@ CREATE TABLE leave_application
   comment_by_applicant VARCHAR2(80),
   leave_type_id NUMBER NOT NULL,
   leave_status_id NUMBER NOT NULL,
-  is_borrowed NUMBER,
   manager_id NUMBER,
   comment_by_manager VARCHAR2(80),
   
@@ -92,8 +91,8 @@ CREATE TABLE leave_application
   CONSTRAINT fk_leave_application_type FOREIGN KEY (leave_type_id) REFERENCES leave_type(leave_type_id),
   CONSTRAINT fk_leave_application_status FOREIGN KEY (leave_status_id) REFERENCES leave_status(leave_status_id),
   CONSTRAINT fk_leave_application_mgr FOREIGN KEY (manager_id) REFERENCES employee(employee_id),
-  CONSTRAINT c_leave_from_half CHECK (leave_from_half IN ('first', 'second')),
-  CONSTRAINT c_leave_to_half CHECK (leave_to_half IN ('first', 'second'))
+  CONSTRAINT c_leave_from_half CHECK (leave_from_half IN ('First', 'Second')),
+  CONSTRAINT c_leave_to_half CHECK (leave_to_half IN ('First', 'Second'))
 );
 
 

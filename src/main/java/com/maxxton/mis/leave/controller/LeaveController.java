@@ -1,6 +1,5 @@
 package com.maxxton.mis.leave.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxxton.mis.leave.domain.AppliedLeave;
+import com.maxxton.mis.leave.domain.AppliedLeaveFrontend;
 import com.maxxton.mis.leave.domain.AvailableLeaveCount;
-import com.maxxton.mis.leave.domain.LeaveStatus;
-import com.maxxton.mis.leave.domain.LeaveType;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.service.LeaveService;
 
@@ -23,19 +20,9 @@ public class LeaveController {
 
   @Autowired  
   LeaveService leaveService;
-
-  @RequestMapping(method = RequestMethod.GET, value = "/types")
-  public List<String> getAllLeavesTypes() {
-    return leaveService.getAllApplicableLeaveTypes();
-  }
-  
-  @RequestMapping(method = RequestMethod.GET, value = "/statuses")
-  public List<String> getAllLeavesStatuses() {
-    return leaveService.getAllLeaveStatuses();
-  }  
     
   @RequestMapping(method = RequestMethod.GET, value = "/applied")
-  public List<AppliedLeave> getAllAppliedLeaves(@RequestParam Long employeeId) {
+  public List<AppliedLeaveFrontend> getAllAppliedLeaves(@RequestParam Long employeeId) {
     return leaveService.getAllAppliedLeaves(employeeId);
   }
   
@@ -44,8 +31,8 @@ public class LeaveController {
     return leaveService.getAllAvailableLeaves(employeeId);
   }
   
-  @RequestMapping(method = RequestMethod.GET, value = "/application/pending")
-  public List<AppliedLeave> getAllPendingLeaves(@RequestParam Long employeeId) {
+  @RequestMapping(method = RequestMethod.GET, value = "/pending")
+  public List<AppliedLeaveFrontend> getAllPendingLeaves(@RequestParam Long employeeId) {
     return leaveService.getAllPendingLeaves(employeeId);
   }
   
@@ -54,13 +41,12 @@ public class LeaveController {
     return leaveService.addEmployeeLeaves(employeeId, year, leaveCount, leaveTypeId);
   }
 
-  @RequestMapping(method = RequestMethod.PUT, value = "/application")
-  public Long applyForLeave(@RequestParam Long employeeId, @RequestParam Date leaveFrom, @RequestParam Date leaveTo, @RequestParam Long leaveTypeId, @RequestParam String commentByApplicant,
-                            @RequestParam Long appliedFor) throws InsufficientLeavesException {
-    return leaveService.applyForLeave(employeeId, leaveFrom, leaveTo, leaveTypeId, commentByApplicant, appliedFor);
+  @RequestMapping(method = RequestMethod.PUT, value = "/apply")
+  public Long applyForLeave(AppliedLeaveFrontend appliedLeave) throws InsufficientLeavesException {
+    return leaveService.applyForLeave(appliedLeave);
   }
 
-  @RequestMapping(method = RequestMethod.POST, value = "/application")
+  @RequestMapping(method = RequestMethod.POST, value = "/process")
   public Long processAppliedLeave(@RequestParam(value = "managerId", required = false) Long managerId, @RequestParam Long leaveApplicationId, @RequestParam Long leaveStatusId,
                                   @RequestParam(value = "commentByManager", required = false) String commentByManager) {
     return leaveService.processAppliedLeave(managerId, leaveApplicationId, leaveStatusId, commentByManager);
