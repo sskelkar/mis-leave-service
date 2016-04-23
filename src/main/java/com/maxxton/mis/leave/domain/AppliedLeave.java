@@ -4,9 +4,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -25,8 +28,14 @@ public class AppliedLeave {
   private Double noOfWorkingDays;
   private Date applicationDate;
   private String commentByApplicant;
-  private Long leaveTypeId;
-  private Long leaveStatusId;
+  
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "leave_type_id")
+  private LeaveType leaveType;
+  
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "leave_status_id")
+  private LeaveStatus leaveStatus;
   private Long isBorrowed;
   private Long managerId;
   private String commentByManager;
@@ -97,20 +106,20 @@ public class AppliedLeave {
     this.commentByApplicant = commentByApplicant;
   }
 
-  public Long getLeaveTypeId() {
-    return leaveTypeId;
+  public LeaveType getLeaveType() {
+    return leaveType;
   }
 
-  public void setLeaveTypeId(Long leaveTypeId) {
-    this.leaveTypeId = leaveTypeId;
+  public void setLeaveType(LeaveType leaveType) {
+    this.leaveType = leaveType;
   }
 
-  public Long getLeaveStatusId() {
-    return leaveStatusId;
+  public LeaveStatus getLeaveStatus() {
+    return leaveStatus;
   }
 
-  public void setLeaveStatusId(Long leaveStatusId) {
-    this.leaveStatusId = leaveStatusId;
+  public void setLeaveStatus(LeaveStatus leaveStatus) {
+    this.leaveStatus = leaveStatus;
   }
 
   public Long getIsBorrowed() {
