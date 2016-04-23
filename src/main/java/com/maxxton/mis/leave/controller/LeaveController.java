@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxxton.mis.leave.domain.AppliedLeave;
 import com.maxxton.mis.leave.domain.AvailableLeaveCount;
+import com.maxxton.mis.leave.domain.PublicHoliday;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.service.LeaveService;
 
@@ -51,5 +52,10 @@ public class LeaveController {
   @RequestMapping(method = RequestMethod.GET, value = "/leave/application/pending")
   public Iterable<AppliedLeave> getAllPendingLeaves(@RequestParam Long employeeId) {
     return leaveService.getAllPendingLeaves(employeeId);
+  }
+  
+  @RequestMapping(method = RequestMethod.GET, value = "/holiday")
+  public Iterable<PublicHoliday> getAllPublicHoliday() {
+    return leaveService.getAllPublicHoliday();
   }
 }
