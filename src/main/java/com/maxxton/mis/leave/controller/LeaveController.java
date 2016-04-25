@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxxton.mis.leave.domain.AppliedLeave;
 import com.maxxton.mis.leave.domain.AvailableLeaveCount;
+import com.maxxton.mis.leave.domain.PublicHoliday;
 import com.maxxton.mis.leave.domain.LeaveStatus;
 import com.maxxton.mis.leave.domain.LeaveType;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
@@ -64,5 +65,10 @@ public class LeaveController {
   public Long processAppliedLeave(@RequestParam(value = "managerId", required = false) Long managerId, @RequestParam Long leaveApplicationId, @RequestParam Long leaveStatusId,
                                   @RequestParam(value = "commentByManager", required = false) String commentByManager) {
     return leaveService.processAppliedLeave(managerId, leaveApplicationId, leaveStatusId, commentByManager);
-  } 
+  }
+  
+  @RequestMapping(method = RequestMethod.GET, value = "/holiday")
+  public Iterable<PublicHoliday> getAllPublicHoliday() {
+    return leaveService.getAllPublicHoliday();
+  }
 }

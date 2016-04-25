@@ -197,7 +197,7 @@ public class LeaveService {
     }
 
     return appliedLeaveId;
-  }
+  } 
   
   public List<String> getAllApplicableLeaveTypes() {
     if(allApplicableLeaveTypes.isEmpty()) {      
@@ -218,4 +218,8 @@ public class LeaveService {
     }      
     return allLeaveStatuses;
   }
+  
+  public Iterable<PublicHoliday> getAllPublicHoliday() {
+		return publicHolidayRepository.findAll(); 
+	  }
 }
