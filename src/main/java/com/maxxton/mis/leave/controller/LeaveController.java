@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxxton.mis.leave.domain.AppliedLeaveFrontend;
 import com.maxxton.mis.leave.domain.AvailableLeaveCount;
+import com.maxxton.mis.leave.domain.PublicHoliday;
+
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.service.LeaveService;
 
@@ -18,24 +20,24 @@ import com.maxxton.mis.leave.service.LeaveService;
 @RequestMapping(value = "/mis/leave")
 public class LeaveController {
 
-  @Autowired  
+  @Autowired
   LeaveService leaveService;
-    
+
   @RequestMapping(method = RequestMethod.GET, value = "/applied")
   public List<AppliedLeaveFrontend> getAllAppliedLeaves(@RequestParam Long employeeId) {
     return leaveService.getAllAppliedLeaves(employeeId);
   }
-  
+
   @RequestMapping(method = RequestMethod.GET, value = "/available")
   public AvailableLeaveCount getAllAvailableLeaves(@RequestParam Long employeeId) {
     return leaveService.getAllAvailableLeaves(employeeId);
   }
-  
+
   @RequestMapping(method = RequestMethod.GET, value = "/pending")
   public List<AppliedLeaveFrontend> getAllPendingLeaves(@RequestParam Long employeeId) {
     return leaveService.getAllPendingLeaves(employeeId);
   }
-  
+
   @RequestMapping(method = RequestMethod.PUT, value = "/")
   public Long addEmployeeLeaves(@RequestParam Long employeeId, @RequestParam Long year, @RequestParam Double leaveCount, @RequestParam Long leaveTypeId) {
     return leaveService.addEmployeeLeaves(employeeId, year, leaveCount, leaveTypeId);
@@ -50,5 +52,10 @@ public class LeaveController {
   public Long processAppliedLeave(@RequestParam(value = "managerId", required = false) Long managerId, @RequestParam Long leaveApplicationId, @RequestParam Long leaveStatusId,
                                   @RequestParam(value = "commentByManager", required = false) String commentByManager) {
     return leaveService.processAppliedLeave(managerId, leaveApplicationId, leaveStatusId, commentByManager);
-  } 
+  }
+
+  @RequestMapping(method = RequestMethod.GET, value = "/holiday")
+  public Iterable<PublicHoliday> getAllPublicHoliday() {
+    return leaveService.getAllPublicHoliday();
+  }
 }

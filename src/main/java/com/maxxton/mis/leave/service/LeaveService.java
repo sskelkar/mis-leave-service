@@ -41,23 +41,23 @@ public class LeaveService {
 
   @Autowired
   private LeaveTypeRepository leaveTypeRepository;
-  
+
   private static final String LEAVE_STATUS_PENDING = "Pending";
   private static final String LEAVE_STATUS_CANCELLED = "Cancelled";
   private static final String LEAVE_STATUS_REJECTED = "Rejected";
-  
+
   private static final Double YEARLY_PLANNED = 16.0;
-  
+
   private static final String PLANNED = "Planned";
   private static final String UNPLANNED = "Unplanned";
   private static final String COMPENSATORY_OFF = "Compensatory Off";
   private static final String BORROWED = "Borrowed";
-  
-  
-  
+
+
+
   /**
    * Simple method to return all the applied leaves of an employee.
-   * 
+   *
    * @param employeeId
    * @return List of applied leaves.
    */
@@ -68,13 +68,13 @@ public class LeaveService {
       leaveFrontend.copyFromAppliedLeave(leave);
       response.add(leaveFrontend);
     };
-    
+
     return response;
   }
 
   /**
    * Method to return all applied leaves of an employee with status 'pending'.
-   * 
+   *
    * @param employeeId
    * @return
    */
@@ -85,34 +85,34 @@ public class LeaveService {
       leaveFrontend.copyFromAppliedLeave(leave);
       response.add(leaveFrontend);
     };
-    
+
     return response;
   }
 
   /**
-   * Method to give count of available planned, unplanned and comp offs for an employee. Rules of borrowing leaves: 
-   * i.   If a user is querying for leaves after July, there are no borrowables. All available planned leaves are listed as planned. 
-   * ii.  If user is querying till July and he has more than 8 available planned leaves, than he has 8 borrowables and remaining leaves are available as planned leaves. 
+   * Method to give count of available planned, unplanned and comp offs for an employee. Rules of borrowing leaves:
+   * i.   If a user is querying for leaves after July, there are no borrowables. All available planned leaves are listed as planned.
+   * ii.  If user is querying till July and he has more than 8 available planned leaves, than he has 8 borrowables and remaining leaves are available as planned leaves.
    * iii. If a user has less than 8 planned leaves left, it means the user has already borrowed leaves from the second half of the year. So he cannot avail either planned or borrowable
    * leaves at this time. The remaining leaves will be available as planned leave after July.
-   * 
+   *
    * @param employeeId
    * @return
    */
   public AvailableLeaveCount getAllAvailableLeaves(Long employeeId) {
     Calendar c = Calendar.getInstance();
     int currentYear = c.get(Calendar.YEAR);
-    int currentMonth = c.get(Calendar.MONTH); 
+    int currentMonth = c.get(Calendar.MONTH);
     AvailableLeaveCount leaveCount = new AvailableLeaveCount();
-    
+
     List<EmployeeLeave> leaves = employeeLeaveRepository.findByEmployeeIdAndYear(employeeId, Long.valueOf(currentYear));
-    
+
     for(EmployeeLeave leave: leaves) {
       if(COMPENSATORY_OFF.equalsIgnoreCase(leave.getLeaveType().getName()))
         leaveCount.setCompOff(leave.getLeaveCount());
       else if(UNPLANNED.equalsIgnoreCase(leave.getLeaveType().getName()))
         leaveCount.setUnplanned(leave.getLeaveCount());
-      else if(PLANNED.equalsIgnoreCase(leave.getLeaveType().getName())) {        
+      else if(PLANNED.equalsIgnoreCase(leave.getLeaveType().getName())) {
         if(currentMonth > Calendar.JULY) {
           leaveCount.setPlanned(leave.getLeaveCount());
           leaveCount.setBorrowable(0.0);
@@ -129,12 +129,12 @@ public class LeaveService {
         }
       }
     }
-    
+
     return leaveCount;
   }
   /**
    * To add leaves of a particular type for an employee by his/her manager.
-   * 
+   *
    * @param employeeId
    * @param year
    * @param leaveCount
@@ -153,7 +153,7 @@ public class LeaveService {
 
   /**
    * Method to add the leave applied by an employee. Borrowing leaves from future has not been implemented for now.
-   * 
+   *
    * @param appliedLeave
    * @return appliedLeaveId of applied leave
    * @throws InsufficientLeavesException
@@ -163,9 +163,9 @@ public class LeaveService {
     for (PublicHoliday holiday : publicHolidayRepository.findAll()) {
       indiaHolidays.add(new LocalDate(holiday.getHolidayDate()));
     }
-    
+
     LocalDate leaveFromJoda = new LocalDate(appliedLeave.getLeaveFrom());
-    
+
     String leaveTypeName = appliedLeave.getLeaveType().equalsIgnoreCase(BORROWED) ? PLANNED : appliedLeave.getLeaveType();
     LeaveType leaveType = leaveTypeRepository.findByNameIgnoreCase(leaveTypeName);
     LeaveStatus leaveStatus = leaveStatusRepository.findByName(appliedLeave.getLeaveStatus());
@@ -182,7 +182,7 @@ public class LeaveService {
       employeeLeave.setLeaveCount(newCount);
       employeeLeaveRepository.save(employeeLeave);
     }
-    
+
     // save the applied leave
     AppliedLeave savedLeave = appliedLeaveRepository.save(leaveApplication);
     return savedLeave.getAppliedLeaveId();
@@ -190,7 +190,7 @@ public class LeaveService {
 
   /**
    * Method to process an applied leave. Meaning the employee who had applied for a leave can cancel them himself. Or his manager can either approve or reject the leaves.
-   * 
+   *
    * @param managerId
    *          Employee id of approving/rejecting employee. This will be null if an employee is cancelling his/her own leaves.
    * @param appliedLeaveId
@@ -218,5 +218,8 @@ public class LeaveService {
 
     return appliedLeaveId;
   }
-  
+
+  public Iterable<PublicHoliday> getAllPublicHoliday() {
+    return publicHolidayRepository.findAll();
+  }
 }
