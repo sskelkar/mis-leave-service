@@ -71,4 +71,8 @@ public class LeaveController {
   public Iterable<PublicHoliday> getAllPublicHoliday() {
     return leaveService.getAllPublicHoliday();
   }
+  @RequestMapping(method = RequestMethod.GET, value = "/history")
+  public List<AppliedLeave> getAppliedHistory(@RequestParam(value="employeeId") Long employeeId){
+  	return leaveService.getAppliedLeaveHistory(employeeId);
+  }
 }

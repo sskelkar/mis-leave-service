@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -222,4 +223,8 @@ public class LeaveService {
   public Iterable<PublicHoliday> getAllPublicHoliday() {
 		return publicHolidayRepository.findAll(); 
 	  }
+  public List<AppliedLeave> getAppliedLeaveHistory(Long employeeId){
+	  Date appliedDate = new DateTime(DateTimeZone.forID(INDIA_TIMEZONE)).toLocalDateTime().toDate();
+	  return appliedLeaveRepository.findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusLeaveStatusIdNot(employeeId, appliedDate, 42L);
+  }
 }
