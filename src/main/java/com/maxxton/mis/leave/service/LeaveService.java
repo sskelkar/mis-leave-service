@@ -2,9 +2,7 @@ package com.maxxton.mis.leave.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import com.maxxton.mis.leave.domain.LeaveStatus;
 import com.maxxton.mis.leave.domain.LeaveType;
 import com.maxxton.mis.leave.domain.PublicHoliday;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
+import com.maxxton.mis.leave.exception.LeaveOverlapException;
 import com.maxxton.mis.leave.repository.AppliedLeaveRepository;
 import com.maxxton.mis.leave.repository.EmployeeLeaveRepository;
 import com.maxxton.mis.leave.repository.LeaveStatusRepository;
@@ -157,13 +156,10 @@ public class LeaveService {
    * @param appliedLeave
    * @return appliedLeaveId of applied leave
    * @throws InsufficientLeavesException
+   * @throws LeaveOverlapException 
    */
-  public Long applyForLeave(AppliedLeaveFrontend appliedLeave) throws InsufficientLeavesException {
-    Set<LocalDate> indiaHolidays = new HashSet<>();
-    for (PublicHoliday holiday : publicHolidayRepository.findAll()) {
-      indiaHolidays.add(new LocalDate(holiday.getHolidayDate()));
-    }
-
+  //TODO make sure the time information from dates are truncated before insertion
+  public Long applyForLeave(AppliedLeaveFrontend appliedLeave) throws LeaveOverlapException, InsufficientLeavesException {
     LocalDate leaveFromJoda = new LocalDate(appliedLeave.getLeaveFrom());
 
     String leaveTypeName = appliedLeave.getLeaveType().equalsIgnoreCase(BORROWED) ? PLANNED : appliedLeave.getLeaveType();
@@ -173,6 +169,12 @@ public class LeaveService {
     leaveApplication.setLeaveType(leaveType);
     leaveApplication.setLeaveStatus(leaveStatus);
 
+    // check if the leave being applied overlaps with any existing leaves
+    List<AppliedLeave> overlappingLeaves = appliedLeaveRepository.findOverlappingLeaves(appliedLeave.getEmployeeId(), appliedLeave.getLeaveFrom(), appliedLeave.getLeaveFromHalf(),
+                                                                                                       appliedLeave.getLeaveTo(), appliedLeave.getLeaveToHalf()); //, Arrays.asList("Pending","Approved")
+    if(!overlappingLeaves.isEmpty())
+      throw new LeaveOverlapException("Overlapping leaves found: " + overlappingLeaves.size());
+    
     // update employee leaves
     if(PLANNED.equalsIgnoreCase(leaveTypeName) || UNPLANNED.equalsIgnoreCase(leaveTypeName) || COMPENSATORY_OFF.equalsIgnoreCase(leaveTypeName)) {
       EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeLeaveTypeIdAndYear(appliedLeave.getEmployeeId(), leaveType.getLeaveTypeId(), Long.valueOf(leaveFromJoda.getYear()));

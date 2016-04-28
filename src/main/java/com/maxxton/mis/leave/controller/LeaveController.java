@@ -3,6 +3,7 @@ package com.maxxton.mis.leave.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxxton.mis.leave.domain.AppliedLeaveFrontend;
 import com.maxxton.mis.leave.domain.AvailableLeaveCount;
 import com.maxxton.mis.leave.domain.PublicHoliday;
-
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
+import com.maxxton.mis.leave.exception.LeaveOverlapException;
 import com.maxxton.mis.leave.service.LeaveService;
 
 
@@ -44,7 +45,7 @@ public class LeaveController {
   }
 
   @RequestMapping(method = RequestMethod.PUT, value = "/apply")
-  public Long applyForLeave(AppliedLeaveFrontend appliedLeave) throws InsufficientLeavesException {
+  public Long applyForLeave(@RequestBody AppliedLeaveFrontend appliedLeave) throws InsufficientLeavesException, LeaveOverlapException {
     return leaveService.applyForLeave(appliedLeave);
   }
 
