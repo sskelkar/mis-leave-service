@@ -15,6 +15,9 @@ public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long
   List<AppliedLeave> findByEmployeeId(Long employeeId);
 
   List<AppliedLeave> findByEmployeeIdAndLeaveStatusNameIgnoreCase(Long employeeId, String leaveStatus);
+  
+  List<AppliedLeave> findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusLeaveStatusIdNot(Long employeeId, Date appliedDate, Long leaveStatusId);
+
 
   /*
    *  Following JPQL is equivalent to:
