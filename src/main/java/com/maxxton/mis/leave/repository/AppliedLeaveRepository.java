@@ -10,13 +10,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.maxxton.mis.leave.domain.AppliedLeave;
 import com.maxxton.mis.leave.domain.EmployeeLeave;
+import com.maxxton.mis.leave.domain.enumeration.LeaveStatus;
 
 public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long>, JpaSpecificationExecutor<AppliedLeave> {
   List<AppliedLeave> findByEmployeeId(Long employeeId);
 
-  List<AppliedLeave> findByEmployeeIdAndLeaveStatusNameIgnoreCase(Long employeeId, String leaveStatus);
+  List<AppliedLeave> findByEmployeeIdAndLeaveStatusNameIgnoreCase(Long employeeId, LeaveStatus leaveStatus);
   
-  List<AppliedLeave> findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusLeaveStatusIdNot(Long employeeId, Date appliedDate, Long leaveStatusId);
+  List<AppliedLeave> findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusNot(Long employeeId, Date appliedDate, LeaveStatus leaveStatus);
 
 
   /*
