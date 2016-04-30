@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-<<<<<<< HEAD
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-=======
->>>>>>> develop
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +54,7 @@ public class LeaveService {
   private static final String UNPLANNED = "Unplanned";
   private static final String COMPENSATORY_OFF = "Compensatory Off";
   private static final String BORROWED = "Borrowed";
+  private final String INDIA_TIMEZONE = "Asia/Kolkata";
 
 
 

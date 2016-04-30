@@ -43,5 +43,4 @@ public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long
 )
   List<AppliedLeave> findOverlappingLeaves(Long employeeId, Date leaveFrom, String leaveFromHalf, Date leaveTo, String leaveToHalf);
   
->>>>>>> develop
 }
