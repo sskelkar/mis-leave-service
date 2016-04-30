@@ -56,7 +56,7 @@ public class LeaveController {
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/holiday")
-  public Iterable<PublicHoliday> getAllPublicHoliday() {
+  public List<PublicHoliday> getAllPublicHoliday() {
     return leaveService.getAllPublicHoliday();
   }
 }
