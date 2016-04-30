@@ -4,6 +4,9 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.maxxton.mis.leave.domain.enumeration.LeaveStatus;
+import com.maxxton.mis.leave.domain.enumeration.LeaveType;
+
 /**
  * This class is equivalent to AppliedLeave class. But it has the fields that are useful for frontend.
  * 
@@ -29,8 +32,8 @@ public class AppliedLeaveFrontend {
   private Long managerId;
   private String leaveFromHalf;
   private String leaveToHalf;
-  private String leaveType;
-  private String leaveStatus;
+  private LeaveType leaveType;
+  private LeaveStatus leaveStatus;
   public Long getAppliedLeaveId() {
     return appliedLeaveId;
   }
@@ -109,16 +112,16 @@ public class AppliedLeaveFrontend {
   public void setLeaveToHalf(String leaveToHalf) {
     this.leaveToHalf = leaveToHalf;
   }
-  public String getLeaveType() {
+  public LeaveType getLeaveType() {
     return leaveType;
   }
-  public void setLeaveType(String leaveType) {
+  public void setLeaveType(LeaveType leaveType) {
     this.leaveType = leaveType;
   }
-  public String getLeaveStatus() {
+  public LeaveStatus getLeaveStatus() {
     return leaveStatus;
   }
-  public void setLeaveStatus(String leaveStatus) {
+  public void setLeaveStatus(LeaveStatus leaveStatus) {
     this.leaveStatus = leaveStatus;
   }
 
@@ -139,8 +142,8 @@ public class AppliedLeaveFrontend {
     this.managerId = appliedLeave.getManagerId();
     this.leaveFromHalf = appliedLeave.getLeaveFromHalf();
     this.leaveToHalf = appliedLeave.getLeaveToHalf();
-    this.leaveType = appliedLeave.getLeaveType().getName();
-    this.leaveStatus = appliedLeave.getLeaveStatus().getName();
+    this.leaveType = appliedLeave.getLeaveType();
+    this.leaveStatus = appliedLeave.getLeaveStatus();
   }
   
   /**

@@ -11,7 +11,7 @@ CREATE TABLE employee
   last_name VARCHAR2(50),
   user_name VARCHAR2(50) NOT NULL UNIQUE,
   password VARCHAR2(128),
-  email VARCHAR2(20),
+  email VARCHAR2(50),
   birth_date DATE,
   joining_date DATE,
   sex VARCHAR2(10),
@@ -40,32 +40,6 @@ CREATE TABLE public_holiday
 );
 
 
--- leave_type
-CREATE SEQUENCE seq_leave_type START WITH 1;
-
-CREATE TABLE leave_type
-(
-  leave_type_id NUMBER NOT NULL,
-  name VARCHAR2(50),
-  
-  CONSTRAINT pk_leave_type PRIMARY KEY (leave_type_id),
-  CONSTRAINT c_leave_type_name CHECK (name IN ('Planned', 'Unplanned', 'Leave Without Pay', 'Compensatory Off', 'Encashed', 'Carry Forward', 'Maternity', 'Paternity', 'Borrowed'))
-);
-
-
--- leave_status
-CREATE SEQUENCE seq_leave_status START WITH 1;
-
-CREATE TABLE leave_status
-(
-  leave_status_id NUMBER NOT NULL,
-  name VARCHAR2(50),
-  
-  CONSTRAINT pk_leave_status PRIMARY KEY (leave_status_id),
-  CONSTRAINT c_leave_status_name CHECK (name IN ('Pending', 'Approved', 'Rejected', 'Cancelled'))
-);
-
-
 -- leave_application
 CREATE SEQUENCE seq_leave_application START WITH 1;
 
@@ -81,15 +55,14 @@ CREATE TABLE leave_application
   no_of_working_days NUMBER,
   application_date DATE,
   comment_by_applicant VARCHAR2(80),
-  leave_type_id NUMBER NOT NULL,
-  leave_status_id NUMBER NOT NULL,
+  leave_type VARCHAR2(20) NOT NULL,
+  leave_status VARCHAR2(20) NOT NULL,
+  is_borrowed NUMBER,
   manager_id NUMBER,
   comment_by_manager VARCHAR2(80),
   
   CONSTRAINT pk_leave_application PRIMARY KEY(leave_application_id),
   CONSTRAINT fk_leave_application_emp FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
-  CONSTRAINT fk_leave_application_type FOREIGN KEY (leave_type_id) REFERENCES leave_type(leave_type_id),
-  CONSTRAINT fk_leave_application_status FOREIGN KEY (leave_status_id) REFERENCES leave_status(leave_status_id),
   CONSTRAINT fk_leave_application_mgr FOREIGN KEY (manager_id) REFERENCES employee(employee_id),
   CONSTRAINT c_leave_from_half CHECK (leave_from_half IN ('First', 'Second')),
   CONSTRAINT c_leave_to_half CHECK (leave_to_half IN ('First', 'Second'))
@@ -105,11 +78,10 @@ CREATE TABLE employee_leave
   employee_id NUMBER NOT NULL,
   year NUMBER,
   leave_count NUMBER,
-  leave_type_id NUMBER NOT NULL,
+  leave_type NUMBER NOT NULL,
     
   CONSTRAINT pk_employee_leave PRIMARY KEY (employee_leave_id),
   CONSTRAINT fk_employee_leave_emp FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
-  CONSTRAINT fk_employee_leave_type FOREIGN KEY (leave_type_id) REFERENCES leave_type(leave_type_id)
 );
 
 
