@@ -7,7 +7,9 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,7 @@ public class LeaveService {
   private static final String UNPLANNED = "Unplanned";
   private static final String COMPENSATORY_OFF = "Compensatory Off";
   private static final String BORROWED = "Borrowed";
+  private final String INDIA_TIMEZONE = "Asia/Kolkata";
 
 
 
@@ -159,7 +162,7 @@ public class LeaveService {
    * @param appliedLeave
    * @return appliedLeaveId of applied leave
    * @throws InsufficientLeavesException
-   * @throws LeaveOverlapException 
+   * @throws LeaveOverlapException
    */
   //TODO make sure the time information from dates are truncated before insertion
   public Long applyForLeave(AppliedLeaveFrontend appliedLeave) throws LeaveOverlapException, InsufficientLeavesException {
@@ -172,20 +175,20 @@ public class LeaveService {
     leaveApplication.setLeaveType(leaveType);
     leaveApplication.setLeaveStatus(leaveStatus);
 
-    DateTime leaveFrom = new DateTime(appliedLeave.getLeaveFrom());    
+    DateTime leaveFrom = new DateTime(appliedLeave.getLeaveFrom());
     DateTime leaveTo = new DateTime(appliedLeave.getLeaveTo());
-    
+
     // calculate no of working days
     Double nofOfWorkingDays = calculateNoOfWorkingDays(leaveFrom, appliedLeave.getLeaveFromHalf(), leaveTo, appliedLeave.getLeaveToHalf());
-    
+
     // check if suffecient leaves of the applied type are available
-    
+
     // check if the leave being applied overlaps with any existing leaves
     List<AppliedLeave> overlappingLeaves = appliedLeaveRepository.findOverlappingLeaves(appliedLeave.getEmployeeId(), appliedLeave.getLeaveFrom(), appliedLeave.getLeaveFromHalf(),
                                                                                                        appliedLeave.getLeaveTo(), appliedLeave.getLeaveToHalf());
     if(!overlappingLeaves.isEmpty())
       throw new LeaveOverlapException("Overlapping leaves found: " + overlappingLeaves.size());
-    
+
     // update employee leaves
     updateAvailableLeaveCount(appliedLeave.getEmployeeId(), leaveType, appliedLeave.getNoOfWorkingDays(), Long.valueOf(leaveFrom.getYear()));
 
@@ -197,9 +200,9 @@ public class LeaveService {
   private boolean areLeavesAvailableForSelectedType(LeaveType leaveType, Double appliedCount) {
     return false;
   }
-  
+
   /**
-   * Method to calculate the no of working days from the applied leave duration.  
+   * Method to calculate the no of working days from the applied leave duration.
    * @param leaveFrom
    * @param leaveFromHalf
    * @param leaveTo
@@ -208,7 +211,7 @@ public class LeaveService {
    */
   private Double calculateNoOfWorkingDays(DateTime leaveFrom, String leaveFromHalf, DateTime leaveTo, String leaveToHalf) {
     Double noOfWorkingDays = 0.0;
-    
+
     if(leaveFrom.isEqual(leaveTo)){
       if(isWorkingDay(leaveFrom)) {
         if(leaveFromHalf.equals("First") && leaveToHalf.equals("Second"))
@@ -222,28 +225,28 @@ public class LeaveService {
       if(isWorkingDay(leaveFrom)){
         noOfWorkingDays = leaveFromHalf.equals("First") ? 1.0 : 0.5;
       }
-      
+
       DateTime currentDate = new DateTime(leaveFrom);
-      
+
       while(currentDate.isBefore(leaveTo)) {
         if(isWorkingDay(currentDate))
           noOfWorkingDays += 1;
         currentDate = currentDate.plusDays(1);
       }
-      
+
       if(isWorkingDay(leaveTo)) {
         noOfWorkingDays += leaveToHalf.equals("Second") ? 1.0 : 0.5;
       }
-    }   
+    }
     return noOfWorkingDays;
   }
-  
+
   private boolean isWorkingDay(DateTime inputDate) {
     return(!(inputDate.getDayOfWeek() == DateTimeConstants.SATURDAY || inputDate.getDayOfWeek() == DateTimeConstants.SUNDAY || publicHolidayRepository.findByHolidayDate(inputDate.toDate()) != null));
   }
   /**
    * Method to update available leave count
-   *  
+   *
    * @param employeeId
    * @param leaveType
    * @param noOfWorkingDays
@@ -251,7 +254,7 @@ public class LeaveService {
    */
   private void updateAvailableLeaveCount(Long employeeId, LeaveType leaveType, Double noOfWorkingDays, Long leaveFromYear) {
     String typeName = leaveType.getName();
-    
+
     if(PLANNED.equalsIgnoreCase(typeName) || UNPLANNED.equalsIgnoreCase(typeName) || COMPENSATORY_OFF.equalsIgnoreCase(typeName)) {
       EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeLeaveTypeIdAndYear(employeeId, leaveType.getLeaveTypeId(), leaveFromYear);
       Double newCount = employeeLeave.getLeaveCount() - noOfWorkingDays;
@@ -297,7 +300,12 @@ public class LeaveService {
    * @return
    */
   public List<PublicHoliday> getAllPublicHoliday() {
-    // TODO: change this to only return holidays of current and future years. 
+    // TODO: change this to only return holidays of current and future years.
     return publicHolidayRepository.findAll();
+  }
+
+  public List<AppliedLeave> getAppliedLeaveHistory(Long employeeId){
+	  Date appliedDate = new DateTime(DateTimeZone.forID(INDIA_TIMEZONE)).toLocalDateTime().toDate();
+	  return appliedLeaveRepository.findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusLeaveStatusIdNot(employeeId, appliedDate, 42L);
   }
 }
