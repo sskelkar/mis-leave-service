@@ -37,8 +37,7 @@ public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long
    */
   @Query("select l from AppliedLeave l inner join l.leaveStatus ls "
       + "where l.employeeId = ?1 and ls.name in ('Pending', 'Approved') "
-      + "and ?3 like 'First' and ?5 like 'Second' "      
-      + "and ((?4 > l.leaveFrom and ?2 < TRUNC(l.leaveTo)) "
+      + "and ((?4 > l.leaveFrom and ?2 < l.leaveTo) "
       + "or (?4 = l.leaveFrom and not (l.leaveFromHalf like 'Second' and ?5 like 'First')) "
       + "or (?2 = l.leaveTo and not (l.leaveToHalf like 'First' and ?3 like 'Second'))) "
 )
