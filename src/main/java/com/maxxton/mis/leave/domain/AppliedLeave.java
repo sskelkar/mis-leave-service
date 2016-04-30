@@ -31,19 +31,19 @@ public class AppliedLeave {
   private Double noOfWorkingDays;
   private Date applicationDate;
   private String commentByApplicant;
-  
+
   @Type(type = "com.maxxton.mis.leave.domain.enumeration.CustomEnumType", parameters = { @Parameter(name = "enumClass", value = "com.maxxton.mis.leave.domain.enumeration.LeaveType") })
   private LeaveType leaveType;
-  
+
   @Type(type = "com.maxxton.mis.leave.domain.enumeration.CustomEnumType", parameters = { @Parameter(name = "enumClass", value = "com.maxxton.mis.leave.domain.enumeration.LeaveStatus") })
   private LeaveStatus leaveStatus;
-  
+
   private Long isBorrowed;
   private Long managerId;
   private String commentByManager;
   private String leaveFromHalf;
   private String leaveToHalf;
-  
+
   public Long getAppliedLeaveId() {
     return appliedLeaveId;
   }
@@ -122,14 +122,6 @@ public class AppliedLeave {
 
   public void setLeaveStatus(LeaveStatus leaveStatus) {
     this.leaveStatus = leaveStatus;
-  }
-
-  public Long getIsBorrowed() {
-    return isBorrowed;
-  }
-
-  public void setIsBorrowed(Long isBorrowed) {
-    this.isBorrowed = isBorrowed;
   }
 
   public Long getManagerId() {

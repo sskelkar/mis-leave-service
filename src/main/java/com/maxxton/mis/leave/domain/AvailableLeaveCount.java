@@ -5,11 +5,13 @@ public class AvailableLeaveCount {
   private Double planned;
   private Double unplanned;
   private Double compOff;
+  private Double borrowable;
   
   public AvailableLeaveCount() {
     this.planned = 0.0;
     this.unplanned = 0.0;
     this.compOff = 0.0;
+    this.borrowable = 0.0;
   }
   
   public Double getPlanned() {
@@ -30,6 +32,11 @@ public class AvailableLeaveCount {
   public void setCompOff(Double compOff) {
     this.compOff = compOff;
   }
-  
-  
+  public Double getBorrowable() {
+    return borrowable;
+  }
+  public void setBorrowable(Double borrowable) {
+    this.borrowable = borrowable;
+  }
+   
 }

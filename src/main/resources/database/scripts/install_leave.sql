@@ -64,8 +64,8 @@ CREATE TABLE leave_application
   CONSTRAINT pk_leave_application PRIMARY KEY(leave_application_id),
   CONSTRAINT fk_leave_application_emp FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
   CONSTRAINT fk_leave_application_mgr FOREIGN KEY (manager_id) REFERENCES employee(employee_id),
-  CONSTRAINT c_leave_from_half CHECK (leave_from_half IN ('first', 'second')),
-  CONSTRAINT c_leave_to_half CHECK (leave_to_half IN ('first', 'second'))
+  CONSTRAINT c_leave_from_half CHECK (leave_from_half IN ('First', 'Second')),
+  CONSTRAINT c_leave_to_half CHECK (leave_to_half IN ('First', 'Second'))
 );
 
 
