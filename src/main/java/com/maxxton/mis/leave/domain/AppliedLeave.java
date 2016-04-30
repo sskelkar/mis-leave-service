@@ -36,7 +36,6 @@ public class AppliedLeave {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "leave_status_id")
   private LeaveStatus leaveStatus;
-  private Long isBorrowed;
   private Long managerId;
   private String commentByManager;
   private String leaveFromHalf;
@@ -120,14 +119,6 @@ public class AppliedLeave {
 
   public void setLeaveStatus(LeaveStatus leaveStatus) {
     this.leaveStatus = leaveStatus;
-  }
-
-  public Long getIsBorrowed() {
-    return isBorrowed;
-  }
-
-  public void setIsBorrowed(Long isBorrowed) {
-    this.isBorrowed = isBorrowed;
   }
 
   public Long getManagerId() {

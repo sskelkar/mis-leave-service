@@ -9,4 +9,5 @@ import com.maxxton.mis.leave.domain.LeaveType;
 
 public interface LeaveTypeRepository extends JpaRepository<LeaveType, Serializable> {
   
+  LeaveType findByNameIgnoreCase(String name);
 }

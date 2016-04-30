@@ -8,8 +8,8 @@ import com.maxxton.mis.leave.domain.EmployeeLeave;
 
 public interface EmployeeLeaveRepository extends JpaRepository<EmployeeLeave, Long> {
 
-  List<EmployeeLeave> findByEmployeeIdAndYearGreaterThanEqual(Long employeeId, Long year);
+  List<EmployeeLeave> findByEmployeeIdAndYear(Long employeeId, Long year);
   
   
-//  EmployeeLeave findByEmployeeIdAndLeaveTypeIdAndYear(Long employeeId, Long leaveTypeId, Long year);
+  EmployeeLeave findByEmployeeIdAndLeaveTypeLeaveTypeIdAndYear(Long employeeId, Long leaveTypeId, Long year);
 }
