@@ -11,7 +11,7 @@ CREATE TABLE employee
   last_name VARCHAR2(50),
   user_name VARCHAR2(50) NOT NULL UNIQUE,
   password VARCHAR2(128),
-  email VARCHAR2(50),
+  email VARCHAR2(20),
   birth_date DATE,
   joining_date DATE,
   sex VARCHAR2(10),

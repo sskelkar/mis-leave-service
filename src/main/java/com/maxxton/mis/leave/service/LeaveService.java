@@ -2,8 +2,12 @@ package com.maxxton.mis.leave.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +55,7 @@ public class LeaveService {
   private static final String UNPLANNED = "Unplanned";
   private static final String COMPENSATORY_OFF = "Compensatory Off";
   private static final String BORROWED = "Borrowed";
+  private final String INDIA_TIMEZONE = "Asia/Kolkata";
 
 
 
@@ -222,6 +227,10 @@ public class LeaveService {
   }
 
   public Iterable<PublicHoliday> getAllPublicHoliday() {
-    return publicHolidayRepository.findAll();
+		return publicHolidayRepository.findAll(); 
+	  }
+  public List<AppliedLeave> getAppliedLeaveHistory(Long employeeId){
+	  Date appliedDate = new DateTime(DateTimeZone.forID(INDIA_TIMEZONE)).toLocalDateTime().toDate();
+	  return appliedLeaveRepository.findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusLeaveStatusIdNot(employeeId, appliedDate, 42L);
   }
 }

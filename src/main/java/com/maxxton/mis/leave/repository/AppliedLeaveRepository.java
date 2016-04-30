@@ -4,14 +4,20 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-import com.maxxton.mis.leave.domain.AppliedLeave;
 
-public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long> {
+import com.maxxton.mis.leave.domain.AppliedLeave;
+import com.maxxton.mis.leave.domain.EmployeeLeave;
+
+public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long>, JpaSpecificationExecutor<AppliedLeave> {
   List<AppliedLeave> findByEmployeeId(Long employeeId);
 
   List<AppliedLeave> findByEmployeeIdAndLeaveStatusNameIgnoreCase(Long employeeId, String leaveStatus);
+  
+  List<AppliedLeave> findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusLeaveStatusIdNot(Long employeeId, Date appliedDate, Long leaveStatusId);
+
 
   /*
    *  Following JPQL is equivalent to:
