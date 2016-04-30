@@ -4,9 +4,9 @@ spring:
     version: 2.0
   datasource:
     driverClassName: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@//192.168.100.100:1521/nwi
-    username: mis_kopie
-    password: mis_kopie
+    url: jdbc:oracle:thin:@//localhost:1521/xe
+    username: mis_db
+    password: mis_db
     
 server:
   port: 72

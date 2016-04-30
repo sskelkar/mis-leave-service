@@ -2,6 +2,7 @@ package com.maxxton.mis.leave.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxxton.mis.leave.domain.AppliedLeave;
 import com.maxxton.mis.leave.domain.AvailableLeaveCount;
 import com.maxxton.mis.leave.domain.PublicHoliday;
-import com.maxxton.mis.leave.domain.LeaveStatus;
-import com.maxxton.mis.leave.domain.LeaveType;
+import com.maxxton.mis.leave.domain.enumeration.LeaveStatus;
+import com.maxxton.mis.leave.domain.enumeration.LeaveType;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.service.LeaveService;
 
@@ -26,12 +27,12 @@ public class LeaveController {
   LeaveService leaveService;
 
   @RequestMapping(method = RequestMethod.GET, value = "/types")
-  public List<String> getAllLeavesTypes() {
+  public List<LeaveType> getAllLeavesTypes() {
     return leaveService.getAllApplicableLeaveTypes();
   }
   
   @RequestMapping(method = RequestMethod.GET, value = "/statuses")
-  public List<String> getAllLeavesStatuses() {
+  public List<LeaveStatus> getAllLeavesStatuses() {
     return leaveService.getAllLeaveStatuses();
   }  
     
@@ -43,6 +44,11 @@ public class LeaveController {
   @RequestMapping(method = RequestMethod.GET, value = "/available")
   public AvailableLeaveCount getAllAvailableLeaves(@RequestParam Long employeeId) {
     return leaveService.getAllAvailableLeaves(employeeId);
+  }
+  
+  @RequestMapping(method = RequestMethod.GET, value = "/availableNew")
+  public Map<LeaveType, Double> getAllAvailableLeavesNew(@RequestParam Long employeeId) {
+    return leaveService.getAllAvailableLeavesNew(employeeId);
   }
   
   @RequestMapping(method = RequestMethod.GET, value = "/application/pending")
@@ -62,9 +68,9 @@ public class LeaveController {
   }
 
   @RequestMapping(method = RequestMethod.POST, value = "/application")
-  public Long processAppliedLeave(@RequestParam(value = "managerId", required = false) Long managerId, @RequestParam Long leaveApplicationId, @RequestParam Long leaveStatusId,
+  public Long processAppliedLeave(@RequestParam(value = "managerId", required = false) Long managerId, @RequestParam Long leaveApplicationId, @RequestParam LeaveStatus leaveStatus,
                                   @RequestParam(value = "commentByManager", required = false) String commentByManager) {
-    return leaveService.processAppliedLeave(managerId, leaveApplicationId, leaveStatusId, commentByManager);
+    return leaveService.processAppliedLeave(managerId, leaveApplicationId, leaveStatus, commentByManager);
   }
   
   @RequestMapping(method = RequestMethod.GET, value = "/holiday")

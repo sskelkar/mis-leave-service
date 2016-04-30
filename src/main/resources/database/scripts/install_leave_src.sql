@@ -18,25 +18,6 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE TRIGGER trg_leave_type_bi
-BEFORE INSERT ON leave_type
-FOR EACH ROW
-BEGIN
-  IF :NEW.leave_type_id IS NULL THEN
-    SELECT seq_leave_type.NEXTVAL INTO :NEW.leave_type_id FROM dual;
-  END IF;
-END;
-/
-
-CREATE OR REPLACE TRIGGER trg_leave_status_bi
-BEFORE INSERT ON leave_status
-FOR EACH ROW
-BEGIN
-  IF :NEW.leave_status_id IS NULL THEN
-    SELECT seq_leave_status.NEXTVAL INTO :NEW.leave_status_id FROM dual;
-  END IF;
-END;
-/
 
 CREATE OR REPLACE TRIGGER trg_leave_application_bi
 BEFORE INSERT ON leave_application

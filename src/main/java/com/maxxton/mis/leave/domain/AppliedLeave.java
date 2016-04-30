@@ -4,14 +4,17 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
+import com.maxxton.mis.leave.domain.enumeration.LeaveStatus;
+import com.maxxton.mis.leave.domain.enumeration.LeaveType;
 
 @Entity
 @Table(name = "leave_application")
@@ -29,13 +32,12 @@ public class AppliedLeave {
   private Date applicationDate;
   private String commentByApplicant;
   
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "leave_type_id")
+  @Type(type = "com.maxxton.mis.leave.domain.enumeration.CustomEnumType", parameters = { @Parameter(name = "enumClass", value = "com.maxxton.mis.leave.domain.enumeration.LeaveType") })
   private LeaveType leaveType;
   
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "leave_status_id")
+  @Type(type = "com.maxxton.mis.leave.domain.enumeration.CustomEnumType", parameters = { @Parameter(name = "enumClass", value = "com.maxxton.mis.leave.domain.enumeration.LeaveStatus") })
   private LeaveStatus leaveStatus;
+  
   private Long isBorrowed;
   private Long managerId;
   private String commentByManager;

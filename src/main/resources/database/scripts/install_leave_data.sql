@@ -1,21 +1,5 @@
 -- ACTUAL DATA
 
--- leave_type
-INSERT INTO leave_type(name) VALUES('Planned');
-INSERT INTO leave_type(name) VALUES('Unplanned');
-INSERT INTO leave_type(name) VALUES('Leave Without Pay');
-INSERT INTO leave_type(name) VALUES('Compensatory Off');
-INSERT INTO leave_type(name) VALUES('Encashed');
-INSERT INTO leave_type(name) VALUES('Carry Forward');
-INSERT INTO leave_type(name) VALUES('Maternity');
-INSERT INTO leave_type(name) VALUES('Paternity');
-
--- leave_status
-INSERT INTO leave_status(name) VALUES('Approved');
-INSERT INTO leave_status(name) VALUES('Pending');
-INSERT INTO leave_status(name) VALUES('Rejected');
-INSERT INTO leave_status(name) VALUES('Cancelled');
-
 -- public_holiday
 INSERT INTO public_holiday(holiday_date, name) VALUES('01-jan-2015', 'New Year Day');
 INSERT INTO public_holiday(holiday_date, name) VALUES('26-jan-2015', 'Republic Day');

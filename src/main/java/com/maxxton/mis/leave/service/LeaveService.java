@@ -3,12 +3,12 @@ package com.maxxton.mis.leave.service;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
@@ -18,14 +18,12 @@ import org.springframework.stereotype.Service;
 import com.maxxton.mis.leave.domain.AppliedLeave;
 import com.maxxton.mis.leave.domain.AvailableLeaveCount;
 import com.maxxton.mis.leave.domain.EmployeeLeave;
-import com.maxxton.mis.leave.domain.LeaveStatus;
-import com.maxxton.mis.leave.domain.LeaveType;
 import com.maxxton.mis.leave.domain.PublicHoliday;
+import com.maxxton.mis.leave.domain.enumeration.LeaveStatus;
+import com.maxxton.mis.leave.domain.enumeration.LeaveType;
 import com.maxxton.mis.leave.exception.InsufficientLeavesException;
 import com.maxxton.mis.leave.repository.AppliedLeaveRepository;
 import com.maxxton.mis.leave.repository.EmployeeLeaveRepository;
-import com.maxxton.mis.leave.repository.LeaveStatusRepository;
-import com.maxxton.mis.leave.repository.LeaveTypeRepository;
 import com.maxxton.mis.leave.repository.PublicHolidayRepository;
 
 @Service
@@ -38,22 +36,12 @@ public class LeaveService {
   private AppliedLeaveRepository appliedLeaveRepository;
 
   @Autowired
-  private LeaveStatusRepository leaveStatusRepository;
-
-  @Autowired
   private PublicHolidayRepository publicHolidayRepository;
 
-  @Autowired
-  private LeaveTypeRepository leaveTypeRepository;
-  
-  private static final String LEAVE_STATUS_PENDING = "pending";
-  private static final String LEAVE_STATUS_CANCELLED = "cancelled";
-  private static final String LEAVE_STATUS_REJECTED = "rejected";
   private static final String INDIA_TIMEZONE = "Asia/Kolkata";
 
-  private static final List<String> allLeaveTypes = new ArrayList<>();
-  private static final List<String> allApplicableLeaveTypes = new ArrayList<>();
-  private static final List<String> allLeaveStatuses = new ArrayList<>();
+  private static final List<LeaveType> allApplicableLeaveTypes = new ArrayList<>();
+  private static final List<LeaveStatus> allLeaveStatuses = new ArrayList<>();
   
   /**
    * Simple method to return all the applied leaves of an employee.
@@ -82,16 +70,32 @@ public class LeaveService {
     List<EmployeeLeave> leaves = employeeLeaveRepository.findByEmployeeIdAndYearGreaterThanEqual(employeeId, Long.valueOf(currentYear));
     
     leaves.forEach(leave -> {
-      if(leave.getLeaveType().getName().equalsIgnoreCase("comp_off"))
+      if(leave.getLeaveType() == LeaveType.COMPENSATORY_OFF)
         leaveCount.setCompOff(leaveCount.getCompOff() + leave.getLeaveCount());
-      else if(leave.getLeaveType().getName().equalsIgnoreCase("unplanned"))
+      else if(leave.getLeaveType() == LeaveType.UNPLANNED)
         leaveCount.setUnplanned(leaveCount.getUnplanned() + leave.getLeaveCount());
-      else if(leave.getLeaveType().getName().equalsIgnoreCase("planned"))
+      else if(leave.getLeaveType() == LeaveType.PLANNED)
         leaveCount.setPlanned(leaveCount.getPlanned() + leave.getLeaveCount());      
     });
     
     return leaveCount;
   }
+  
+  public Map<LeaveType, Double> getAllAvailableLeavesNew(Long employeeId) {
+	    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	    
+	    List<EmployeeLeave> leaves = employeeLeaveRepository.findByEmployeeIdAndYearGreaterThanEqual(employeeId, Long.valueOf(currentYear));
+	    
+	    Map<LeaveType, Double> countForLeaveType = new HashMap<>();
+
+	    for(EmployeeLeave employeeLeave : leaves)
+	    {
+	      countForLeaveType.put(employeeLeave.getLeaveType(), 
+	        		(countForLeaveType.get(employeeLeave.getLeaveType()) != null ? countForLeaveType.get(employeeLeave.getLeaveType()) : 0.0) + employeeLeave.getLeaveCount());
+	    }
+	    
+	    return countForLeaveType;
+	  }
   /**
    * To add leaves of a particular type for an employee by his/her manager.
    * 
@@ -178,7 +182,7 @@ public class LeaveService {
    * @param commentByManager
    * @return leaveApplicationId of the processed leave.
    */
-  public Long processAppliedLeave(Long managerId, Long appliedLeaveId, Long leaveStatusId, String commentByManager) {
+  public Long processAppliedLeave(Long managerId, Long appliedLeaveId, LeaveStatus leaveStatus, String commentByManager) {
     AppliedLeave leaveApplication = null;//appliedLeaveRepository.findByAppliedLeaveId(appliedLeaveId);
 
 //    leaveApplication.setLeaveStatusId(leaveStatusId);
@@ -189,7 +193,7 @@ public class LeaveService {
     appliedLeaveRepository.save(leaveApplication);
 
     // if leaves were cancelled or rejected, their count must be added back to employee leave count.
-    if (leaveStatusId == leaveStatusRepository.findByName(LEAVE_STATUS_REJECTED).getLeaveStatusId() || leaveStatusId == leaveStatusRepository.findByName(LEAVE_STATUS_CANCELLED).getLeaveStatusId()) {
+    if (leaveStatus == LeaveStatus.REJECTED || leaveStatus == LeaveStatus.CANCELLED) {
       LocalDate leaveFrom = new LocalDate(leaveApplication.getLeaveFrom());
       EmployeeLeave employeeLeave = null;//employeeLeaveRepository.findByEmployeeIdAndLeaveTypeIdAndYear(leaveApplication.getEmployeeId(), leaveApplication.getLeaveTypeId(), new Long(leaveFrom.getYear()));
       employeeLeave.setLeaveCount(employeeLeave.getLeaveCount() + leaveApplication.getNoOfWorkingDays());
@@ -199,23 +203,33 @@ public class LeaveService {
     return appliedLeaveId;
   } 
   
-  public List<String> getAllApplicableLeaveTypes() {
-    if(allApplicableLeaveTypes.isEmpty()) {      
-      leaveTypeRepository.findAll().forEach(leave -> {
-        if(!("encashed".equalsIgnoreCase(leave.getName()) || "carry forward".equalsIgnoreCase(leave.getName())))
-          allApplicableLeaveTypes.add(leave.getName());        
-      });
-    }
+  public List<LeaveType> getAllApplicableLeaveTypes() {
+//    if(allApplicableLeaveTypes.isEmpty()) {      
+//      leaveTypeRepository.findAll().forEach(leave -> {
+//        if(!(LeaveType.ENCASHED == leave || LeaveType.CARRY_FORWARD == leave))
+//          allApplicableLeaveTypes.add(leave);        
+//      });
+//    }
+    
+    for (LeaveType type : LeaveType.values()) {
+    	if(!(LeaveType.ENCASHED == type || LeaveType.CARRY_FORWARD == type))
+            allApplicableLeaveTypes.add(type);
+        }
+      
     
     return allApplicableLeaveTypes;
   }
   
-  public List<String> getAllLeaveStatuses() {
-    if(allLeaveStatuses.isEmpty()) {
-      leaveStatusRepository.findAll().forEach(status -> {
-        allLeaveStatuses.add(status.getName());
-      });      
-    }      
+  public List<LeaveStatus> getAllLeaveStatuses() {
+//    if(allLeaveStatuses.isEmpty()) {
+//      leaveStatusRepository.findAll().forEach(status -> {
+//        allLeaveStatuses.add(status);
+//      });      
+//    }
+    
+    for (LeaveStatus type : LeaveStatus.values()) {
+    	allLeaveStatuses.add(type);
+        }
     return allLeaveStatuses;
   }
   
