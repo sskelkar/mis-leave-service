@@ -12,5 +12,5 @@ public interface EmployeeLeaveRepository extends JpaRepository<EmployeeLeave, Lo
   List<EmployeeLeave> findByEmployeeIdAndYear(Long employeeId, Long year);
   
   
-  EmployeeLeave findByEmployeeIdAndLeaveTypeLeaveTypeIdAndYear(Long employeeId, LeaveType leaveType, Long year);
+  EmployeeLeave findByEmployeeIdAndLeaveTypeAndYear(Long employeeId, LeaveType leaveType, Long year);
 }
