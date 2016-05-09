@@ -3,6 +3,7 @@ package com.maxxton.mis.leave.service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -69,7 +70,7 @@ public class LeaveService {
    */
   public List<AppliedLeaveFrontend> getAllPendingLeaves(Long employeeId) {
     List<AppliedLeaveFrontend> response = new ArrayList<>();
-    for(AppliedLeave leave: appliedLeaveRepository.findByEmployeeIdAndLeaveStatusIgnoreCase(employeeId, LeaveStatus.PENDING)) {
+    for(AppliedLeave leave: appliedLeaveRepository.findByEmployeeIdAndLeaveStatus(employeeId, LeaveStatus.PENDING)) {
       AppliedLeaveFrontend leaveFrontend = new AppliedLeaveFrontend();
       leaveFrontend.copyFromAppliedLeave(leave);
       response.add(leaveFrontend);
@@ -238,5 +239,13 @@ public class LeaveService {
         allApplicableLeaveTypes.add(type);
     }
     return allApplicableLeaveTypes;
+  }
+
+  public List<AppliedLeave> getPendingLeavesForNextWorkingDay()
+  {
+    Calendar nextWorkingDay = GregorianCalendar.getInstance();
+    nextWorkingDay.setTime(new Date());
+    nextWorkingDay.add(Calendar.DATE, nextWorkingDay.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY ? 3 : 1);
+    return appliedLeaveRepository.findByLeaveFromAndLeaveStatus(nextWorkingDay.getTime(), LeaveStatus.PENDING);
   }
 }

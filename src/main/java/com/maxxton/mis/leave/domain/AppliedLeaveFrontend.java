@@ -30,8 +30,8 @@ public class AppliedLeaveFrontend {
   private String commentByApplicant;
   private String commentByManager;
   private Long managerId;
-  private String leaveFromHalf;
-  private String leaveToHalf;
+  private int leaveFromHalf;
+  private int leaveToHalf;
   private LeaveType leaveType;
   private LeaveStatus leaveStatus;
   public Long getAppliedLeaveId() {
@@ -100,16 +100,16 @@ public class AppliedLeaveFrontend {
   public void setManagerId(Long managerId) {
     this.managerId = managerId;
   }
-  public String getLeaveFromHalf() {
+  public int getLeaveFromHalf() {
     return leaveFromHalf;
   }
-  public void setLeaveFromHalf(String leaveFromHalf) {
+  public void setLeaveFromHalf(int leaveFromHalf) {
     this.leaveFromHalf = leaveFromHalf;
   }
-  public String getLeaveToHalf() {
+  public int getLeaveToHalf() {
     return leaveToHalf;
   }
-  public void setLeaveToHalf(String leaveToHalf) {
+  public void setLeaveToHalf(int leaveToHalf) {
     this.leaveToHalf = leaveToHalf;
   }
   public LeaveType getLeaveType() {

@@ -23,6 +23,7 @@ CREATE TABLE employee
   emergency_contact_person VARCHAR2(50),
   emergency_contact_phone_number VARCHAR2(20),
   blood_group VARCHAR2(5),
+  manager_id NUMBER,
   
   CONSTRAINT pk_employee PRIMARY KEY (employee_id)
 );
@@ -48,15 +49,15 @@ CREATE TABLE leave_application
   leave_application_id NUMBER NOT NULL,
   employee_id NUMBER NOT NULL,
   leave_from DATE,
-  leave_from_half VARCHAR2(10),
+  leave_from_half NUMBER,
   leave_to DATE,
-  leave_to_half VARCHAR2(10),
+  leave_to_half NUMBER,
   leave_duration NUMBER,
   no_of_working_days NUMBER,
   application_date DATE,
   comment_by_applicant VARCHAR2(80),
-  leave_type VARCHAR2(20) NOT NULL,
-  leave_status VARCHAR2(20) NOT NULL,
+  leave_type VARCHAR2(50) NOT NULL,
+  leave_status VARCHAR2(50) NOT NULL,
   is_borrowed NUMBER,
   manager_id NUMBER,
   comment_by_manager VARCHAR2(80),
@@ -64,8 +65,8 @@ CREATE TABLE leave_application
   CONSTRAINT pk_leave_application PRIMARY KEY(leave_application_id),
   CONSTRAINT fk_leave_application_emp FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
   CONSTRAINT fk_leave_application_mgr FOREIGN KEY (manager_id) REFERENCES employee(employee_id),
-  CONSTRAINT c_leave_from_half CHECK (leave_from_half IN ('First', 'Second')),
-  CONSTRAINT c_leave_to_half CHECK (leave_to_half IN ('First', 'Second'))
+  CONSTRAINT c_leave_from_half CHECK (leave_from_half IN (1, 2)),
+  CONSTRAINT c_leave_to_half CHECK (leave_to_half IN (1, 2))
 );
 
 

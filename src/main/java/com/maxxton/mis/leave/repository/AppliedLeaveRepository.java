@@ -9,13 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 
 
 import com.maxxton.mis.leave.domain.AppliedLeave;
-import com.maxxton.mis.leave.domain.EmployeeLeave;
 import com.maxxton.mis.leave.domain.enumeration.LeaveStatus;
 
 public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long>, JpaSpecificationExecutor<AppliedLeave> {
   List<AppliedLeave> findByEmployeeId(Long employeeId);
 
-  List<AppliedLeave> findByEmployeeIdAndLeaveStatusIgnoreCase(Long employeeId, LeaveStatus leaveStatus);
+  List<AppliedLeave> findByEmployeeIdAndLeaveStatus(Long employeeId, LeaveStatus leaveStatus);
   
   List<AppliedLeave> findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusNot(Long employeeId, Date appliedDate, LeaveStatus leaveStatus);
 
@@ -42,9 +41,12 @@ public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long
   @Query("select l from AppliedLeave l "
       + "where l.employeeId = ?1 and l.leaveStatus in ('pending', 'approved') "
       + "and ((?4 > l.leaveFrom and ?2 < l.leaveTo) "
-      + "or (?4 = l.leaveFrom and not (l.leaveFromHalf like 'Second' and ?5 like 'First')) "
-      + "or (?2 = l.leaveTo and not (l.leaveToHalf like 'First' and ?3 like 'Second'))) "
-)
-  List<AppliedLeave> findOverlappingLeaves(Long employeeId, Date leaveFrom, String leaveFromHalf, Date leaveTo, String leaveToHalf);
+      + "or (?4 = l.leaveFrom and not (l.leaveFromHalf = 2 and ?5 = 1)) "
+      + "or (?2 = l.leaveTo and not (l.leaveToHalf = 1 and ?3 = 2))) "
+  )
+  List<AppliedLeave> findOverlappingLeaves(Long employeeId, Date leaveFrom, int leaveFromHalf, Date leaveTo, int leaveToHalf);
+
+  @Query("select l from AppliedLeave l where trunc(leaveFrom) = trunc(?1) and l.leaveStatus = ?2" )
+  List<AppliedLeave> findByLeaveFromAndLeaveStatus(Date leaveFrom, LeaveStatus leaveStatus);
   
 }
