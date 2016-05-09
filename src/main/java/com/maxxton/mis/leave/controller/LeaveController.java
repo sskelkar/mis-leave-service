@@ -54,8 +54,8 @@ public class LeaveController {
   }
 
   @RequestMapping(method = RequestMethod.PUT, value = "/")
-  public Long addEmployeeLeaves(@RequestParam Long employeeId, @RequestParam Long year, @RequestParam Double leaveCount, @RequestParam Long leaveTypeId) {
-    return leaveService.addEmployeeLeaves(employeeId, year, leaveCount, leaveTypeId);
+  public Long addEmployeeLeaves(@RequestParam Long employeeId, @RequestParam Long year, @RequestParam Double leaveCount, @RequestParam LeaveType leaveType) {
+    return leaveService.addEmployeeLeaves(employeeId, year, leaveCount, leaveType);
   }
 
   @RequestMapping(method = RequestMethod.PUT, value = "/apply")
@@ -67,6 +67,11 @@ public class LeaveController {
   public Long processAppliedLeave(@RequestParam(value = "managerId", required = false) Long managerId, @RequestParam Long leaveApplicationId, @RequestParam LeaveStatus leaveStatus,
                                   @RequestParam(value = "commentByManager", required = false) String commentByManager) {
     return leaveService.processAppliedLeave(managerId, leaveApplicationId, leaveStatus, commentByManager);
+  }
+  
+  @RequestMapping(method = RequestMethod.GET, value = "/next-day-pending-leaves")
+  public List<AppliedLeave> getPendingLeavesForNextWorkingDay(){
+    return leaveService.getPendingLeavesForNextWorkingDay();
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/holiday")

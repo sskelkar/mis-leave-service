@@ -3,6 +3,7 @@ package com.maxxton.mis.leave.service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -69,7 +70,7 @@ public class LeaveService {
    */
   public List<AppliedLeaveFrontend> getAllPendingLeaves(Long employeeId) {
     List<AppliedLeaveFrontend> response = new ArrayList<>();
-    for(AppliedLeave leave: appliedLeaveRepository.findByEmployeeIdAndLeaveStatusNameIgnoreCase(employeeId, LeaveStatus.PENDING)) {
+    for(AppliedLeave leave: appliedLeaveRepository.findByEmployeeIdAndLeaveStatus(employeeId, LeaveStatus.PENDING)) {
       AppliedLeaveFrontend leaveFrontend = new AppliedLeaveFrontend();
       leaveFrontend.copyFromAppliedLeave(leave);
       response.add(leaveFrontend);
@@ -132,15 +133,15 @@ public class LeaveService {
    * @param employeeId
    * @param year
    * @param leaveCount
-   * @param leaveTypeId
+   * @param leaveType
    * @return employeeLeaveId of the added leave.
    */
-  public Long addEmployeeLeaves(Long employeeId, Long year, Double leaveCount, Long leaveTypeId) {
+  public Long addEmployeeLeaves(Long employeeId, Long year, Double leaveCount, LeaveType leaveType) {
     EmployeeLeave employeeLeave = new EmployeeLeave();
     employeeLeave.setEmployeeId(employeeId);
     employeeLeave.setYear(year);
     employeeLeave.setLeaveCount(leaveCount);
-//    employeeLeave.setLeaveTypeId(leaveTypeId);
+    employeeLeave.setLeaveType(leaveType);
 
     return employeeLeaveRepository.save(employeeLeave).getEmployeeLeaveId();
   }
@@ -170,7 +171,7 @@ public class LeaveService {
     
     // update employee leaves
     if(LeaveType.PLANNED == leaveType || LeaveType.UNPLANNED == leaveType || LeaveType.COMPENSATORY_OFF == leaveType) {
-      EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeLeaveTypeIdAndYear(appliedLeave.getEmployeeId(), leaveType, Long.valueOf(leaveFromJoda.getYear()));
+      EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeAndYear(appliedLeave.getEmployeeId(), leaveType, Long.valueOf(leaveFromJoda.getYear()));
       Double newCount = employeeLeave.getLeaveCount() - appliedLeave.getNoOfWorkingDays();
       if(newCount < 0)
         throw new InsufficientLeavesException();
@@ -206,7 +207,7 @@ public class LeaveService {
     // if leaves were cancelled or rejected, their count must be added back to employee leave count.
     if (leaveStatus == LeaveStatus.REJECTED || leaveStatus == LeaveStatus.CANCELLED) {
       LocalDate leaveFrom = new LocalDate(leaveApplication.getLeaveFrom());
-      EmployeeLeave employeeLeave = null;//employeeLeaveRepository.findByEmployeeIdAndLeaveTypeIdAndYear(leaveApplication.getEmployeeId(), leaveApplication.getLeaveTypeId(), new Long(leaveFrom.getYear()));
+      EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeAndYear(leaveApplication.getEmployeeId(), leaveApplication.getLeaveType(), new Long(leaveFrom.getYear()));
       employeeLeave.setLeaveCount(employeeLeave.getLeaveCount() + leaveApplication.getNoOfWorkingDays());
       employeeLeaveRepository.save(employeeLeave);
     }
@@ -238,5 +239,13 @@ public class LeaveService {
         allApplicableLeaveTypes.add(type);
     }
     return allApplicableLeaveTypes;
+  }
+
+  public List<AppliedLeave> getPendingLeavesForNextWorkingDay()
+  {
+    Calendar nextWorkingDay = GregorianCalendar.getInstance();
+    nextWorkingDay.setTime(new Date());
+    nextWorkingDay.add(Calendar.DATE, nextWorkingDay.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY ? 3 : 1);
+    return appliedLeaveRepository.findByLeaveFromAndLeaveStatus(nextWorkingDay.getTime(), LeaveStatus.PENDING);
   }
 }

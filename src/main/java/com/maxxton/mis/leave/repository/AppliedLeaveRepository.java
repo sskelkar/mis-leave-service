@@ -9,13 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 
 
 import com.maxxton.mis.leave.domain.AppliedLeave;
-import com.maxxton.mis.leave.domain.EmployeeLeave;
 import com.maxxton.mis.leave.domain.enumeration.LeaveStatus;
 
 public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long>, JpaSpecificationExecutor<AppliedLeave> {
   List<AppliedLeave> findByEmployeeId(Long employeeId);
 
-  List<AppliedLeave> findByEmployeeIdAndLeaveStatusNameIgnoreCase(Long employeeId, LeaveStatus leaveStatus);
+  List<AppliedLeave> findByEmployeeIdAndLeaveStatus(Long employeeId, LeaveStatus leaveStatus);
   
   List<AppliedLeave> findByEmployeeIdAndApplicationDateLessThanEqualAndLeaveStatusNot(Long employeeId, Date appliedDate, LeaveStatus leaveStatus);
 
@@ -39,12 +38,15 @@ public interface AppliedLeaveRepository extends JpaRepository<AppliedLeave, Long
    *  2. if we are applying for a leave that ends on the same date as the start date of any existing leave, they won't overlap if new leave ends in first half and existing leaves starts from second half.
    *  3. if we are applying for a leave that starts on the same date as the end date of any existing leave, they won't overlap if the existing leave ends in the first half and the new leave starts from second half.     
    */
-  @Query("select l from AppliedLeave l inner join l.leaveStatus ls "
-      + "where l.employeeId = ?1 and ls.name in ('Pending', 'Approved') "
+  @Query("select l from AppliedLeave l "
+      + "where l.employeeId = ?1 and l.leaveStatus in ('pending', 'approved') "
       + "and ((?4 > l.leaveFrom and ?2 < l.leaveTo) "
-      + "or (?4 = l.leaveFrom and not (l.leaveFromHalf like 'Second' and ?5 like 'First')) "
-      + "or (?2 = l.leaveTo and not (l.leaveToHalf like 'First' and ?3 like 'Second'))) "
-)
-  List<AppliedLeave> findOverlappingLeaves(Long employeeId, Date leaveFrom, String leaveFromHalf, Date leaveTo, String leaveToHalf);
+      + "or (?4 = l.leaveFrom and not (l.leaveFromHalf = 2 and ?5 = 1)) "
+      + "or (?2 = l.leaveTo and not (l.leaveToHalf = 1 and ?3 = 2))) "
+  )
+  List<AppliedLeave> findOverlappingLeaves(Long employeeId, Date leaveFrom, int leaveFromHalf, Date leaveTo, int leaveToHalf);
+
+  @Query("select l from AppliedLeave l where trunc(leaveFrom) = trunc(?1) and l.leaveStatus = ?2" )
+  List<AppliedLeave> findByLeaveFromAndLeaveStatus(Date leaveFrom, LeaveStatus leaveStatus);
   
 }

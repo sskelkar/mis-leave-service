@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -25,7 +27,10 @@ public class AppliedLeave {
   @SequenceGenerator(name = "SEQ_LEAVE_APPLICATION", sequenceName = "SEQ_LEAVE_APPLICATION", allocationSize = 1)
   private Long appliedLeaveId;
   private Long employeeId;
+  
+  @Temporal(TemporalType.DATE)
   private Date leaveFrom;
+  
   private Date leaveTo;
   private Double leaveDuration;
   private Double noOfWorkingDays;
@@ -41,8 +46,8 @@ public class AppliedLeave {
   private Long isBorrowed;
   private Long managerId;
   private String commentByManager;
-  private String leaveFromHalf;
-  private String leaveToHalf;
+  private int leaveFromHalf;
+  private int leaveToHalf;
 
   public Long getAppliedLeaveId() {
     return appliedLeaveId;
@@ -140,19 +145,19 @@ public class AppliedLeave {
     this.commentByManager = commentByManager;
   }
 
-  public String getLeaveFromHalf() {
+  public int getLeaveFromHalf() {
     return leaveFromHalf;
   }
 
-  public void setLeaveFromHalf(String leaveFromHalf) {
+  public void setLeaveFromHalf(int leaveFromHalf) {
     this.leaveFromHalf = leaveFromHalf;
   }
 
-  public String getLeaveToHalf() {
+  public int getLeaveToHalf() {
     return leaveToHalf;
   }
 
-  public void setLeaveToHalf(String leaveToHalf) {
+  public void setLeaveToHalf(int leaveToHalf) {
     this.leaveToHalf = leaveToHalf;
   }
 
