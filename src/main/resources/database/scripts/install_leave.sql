@@ -41,11 +41,11 @@ CREATE TABLE public_holiday
 
 
 -- leave_application
-CREATE SEQUENCE seq_leave_application START WITH 1;
+CREATE SEQUENCE seq_applied_leave START WITH 1;
 
-CREATE TABLE leave_application
+CREATE TABLE applied_leave
 (
-  leave_application_id NUMBER NOT NULL,
+  applied_leave_id NUMBER NOT NULL,
   employee_id NUMBER NOT NULL,
   leave_from DATE,
   leave_from_half VARCHAR2(10),
@@ -59,6 +59,10 @@ CREATE TABLE leave_application
   leave_status VARCHAR2(20) NOT NULL,
   is_borrowed NUMBER,
   manager_id NUMBER,
+  approved_from DATE,
+  approved_from_half VARCHAR2(10),
+  approved_to DATE,
+  approved_to_half VARCHAR2(10),
   comment_by_manager VARCHAR2(80),
   
   CONSTRAINT pk_leave_application PRIMARY KEY(leave_application_id),

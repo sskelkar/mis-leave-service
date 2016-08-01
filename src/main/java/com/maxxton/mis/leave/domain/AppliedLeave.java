@@ -17,12 +17,12 @@ import com.maxxton.mis.leave.domain.enumeration.LeaveStatus;
 import com.maxxton.mis.leave.domain.enumeration.LeaveType;
 
 @Entity
-@Table(name = "leave_application")
+@Table(name = "applied_leave")
 public class AppliedLeave {
   @Id
-  @Column(name = "leave_application_id")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_LEAVE_APPLICATION")
-  @SequenceGenerator(name = "SEQ_LEAVE_APPLICATION", sequenceName = "SEQ_LEAVE_APPLICATION", allocationSize = 1)
+  @Column(name = "applied_leave_id")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_APPLIED_LEAVE")
+  @SequenceGenerator(name = "SEQ_APPLIED_LEAVE", sequenceName = "SEQ_APPLIED_LEAVE", allocationSize = 1)
   private Long appliedLeaveId;
   private Long employeeId;
   private Date leaveFrom;
@@ -38,7 +38,6 @@ public class AppliedLeave {
   @Type(type = "com.maxxton.mis.leave.domain.enumeration.CustomEnumType", parameters = { @Parameter(name = "enumClass", value = "com.maxxton.mis.leave.domain.enumeration.LeaveStatus") })
   private LeaveStatus leaveStatus;
 
-  private Long isBorrowed;
   private Long managerId;
   private String commentByManager;
   private String leaveFromHalf;

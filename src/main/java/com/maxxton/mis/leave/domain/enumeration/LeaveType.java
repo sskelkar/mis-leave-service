@@ -6,14 +6,14 @@ package com.maxxton.mis.leave.domain.enumeration;
  * @author M. Gangurde (m.gangurde@maxxton.com)
  */
 public enum LeaveType {
-  CARRY_FORWARD ("carryforward"),
-  COMPENSATORY_OFF ("compoff"),
-  ENCASHED ("encashed"),
-  LEAVE_WITHOUT_PAY ("lwp"),
-  MATERNITY ("maternity"),
-  PATERNITY ("paternity"),
-  PLANNED ("planned"),
-  UNPLANNED ("unplanned");
+  CARRY_FORWARD ("Carry Forward"),
+  COMPENSATORY_OFF ("Compensatory Off"),
+  ENCASHED ("Encashed"),
+  LEAVE_WITHOUT_PAY ("Leave Without Pay"),
+  MATERNITY ("Maternity"),
+  PATERNITY ("Paternity"),
+  PLANNED ("Planned"),
+  UNPLANNED ("Unplanned");
 
   private String value;
 

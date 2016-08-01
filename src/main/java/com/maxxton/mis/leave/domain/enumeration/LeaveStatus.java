@@ -6,10 +6,10 @@ package com.maxxton.mis.leave.domain.enumeration;
  * @author M. Gangurde (m.gangurde@maxxton.com)
  */
 public enum LeaveStatus {
-  APPROVED ("approved"),
-  PENDING ("pending"),
-  CANCELLED ("cancelled"),
-  REJECTED ("rejected");
+  APPROVED ("Approved"),
+  PENDING ("Pending"),
+  CANCELLED ("Cancelled"),
+  REJECTED ("Rejected");
 
   private String value;
 
