@@ -242,10 +242,9 @@ public class LeaveService {
    * @param leaveFromYear
    */
   private void updateAvailableLeaveCount(Long employeeId, LeaveType leaveType, Double noOfWorkingDays, Long leaveFromYear) {
-    String typeName = leaveType.getName();
 
-    if(PLANNED.equalsIgnoreCase(typeName) || UNPLANNED.equalsIgnoreCase(typeName) || COMPENSATORY_OFF.equalsIgnoreCase(typeName)) {
-      EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeLeaveTypeIdAndYear(employeeId, leaveType.getLeaveTypeId(), leaveFromYear);
+    if(LeaveType.PLANNED.equals(leaveType) || LeaveType.UNPLANNED.equals(leaveType) || LeaveType.COMPENSATORY_OFF.equals(leaveType)) {
+      EmployeeLeave employeeLeave = employeeLeaveRepository.findByEmployeeIdAndLeaveTypeAndYear(employeeId, leaveType, leaveFromYear);
       Double newCount = employeeLeave.getLeaveCount() - noOfWorkingDays;
       if(newCount < 0)
         throw new InsufficientLeavesException();
